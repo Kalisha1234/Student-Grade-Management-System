@@ -1,6 +1,5 @@
 package org.example;
 
-// HonorsStudent.java
 public class HonorsStudent extends Student {
     private double passingGrade = 60.0;
 

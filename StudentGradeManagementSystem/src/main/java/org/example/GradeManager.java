@@ -1,6 +1,5 @@
 package org.example;
 
-// GradeManager.java
 public class GradeManager {
     private Grade[] grades;
     private int gradeCount;
@@ -19,14 +18,14 @@ public class GradeManager {
 
     public void viewGradesByStudent(String studentId) {
         System.out.println("\nGRADE HISTORY");
-        System.out.println("\nGRD ID | DATE       | SUBJECT     | TYPE    | GRADE");
+        System.out.println("\nGRD ID    | DATE          | SUBJECT        | TYPE       | GRADE");
         System.out.println("-----------------------------------------------------");
 
         boolean found = false;
         for (int i = gradeCount - 1; i >= 0; i--) {
             if (grades[i] != null && grades[i].getStudentId().equals(studentId)) {
                 Grade grade = grades[i];
-                System.out.printf("%-6s | %-10s | %-11s | %-7s | %.1f%%\n",
+                System.out.printf("%-6s    | %-10s    | %-11s    | %-7s    | %.1f%%\n",
                         grade.getGradeId(),
                         grade.getDate(),
                         grade.getSubject().getSubjectName(),

@@ -1,6 +1,5 @@
 package org.example;
 
-// ElectiveSubject.java
 public class ElectiveSubject extends Subject {
     private boolean mandatory = false;
 

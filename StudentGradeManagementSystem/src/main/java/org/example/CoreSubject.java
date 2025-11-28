@@ -1,6 +1,5 @@
 package org.example;
 
-// CoreSubject.java
 public class CoreSubject extends Subject {
     private boolean mandatory = true;
 

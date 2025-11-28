@@ -1,4 +1,4 @@
-package org.example;// Student.java
+package org.example;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +22,6 @@ public abstract class Student {
         this.grades = new ArrayList<>();
     }
 
-    // Getters and setters
     public String getStudentId() { return studentId; }
     public String getName() { return name; }
     public int getAge() { return age; }
@@ -33,12 +32,10 @@ public abstract class Student {
 
     public void setStatus(String status) { this.status = status; }
 
-    // Abstract methods
     public abstract void displayStudentDetails();
     public abstract String getStudentType();
     public abstract double getPassingGrade();
 
-    // Concrete methods
     public double calculateAverageGrade() {
         if (grades.isEmpty()) return 0.0;
 

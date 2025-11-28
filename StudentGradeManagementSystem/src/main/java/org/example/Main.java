@@ -3,14 +3,11 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Main {
-//    private static StudentManager studentManager = new StudentManager();
-//    private static GradeManager gradeManager = new GradeManager();
     private static Scanner scanner = new Scanner(System.in);
 
     private static StudentManager studentManager = new StudentManager();
     private static GradeManager gradeManager = studentManager.getGradeManager();
 
-    // Validation patterns
     private static final Pattern NAME_PATTERN = Pattern.compile("^[a-zA-Z\\s]+$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("^[+\\d\\s-()]+$");
@@ -54,7 +51,7 @@ public class Main {
             }
 
             System.out.print("\nPress Enter to continue...");
-            scanner.nextLine(); // Wait for user input
+            scanner.nextLine(); 
         }
     }
 
@@ -62,7 +59,6 @@ public class Main {
         System.out.println("\nADD STUDENT");
         System.out.println();
 
-        // Name validation
         String name;
         while (true) {
             System.out.print("Enter student name: ");
@@ -74,7 +70,6 @@ public class Main {
             }
         }
 
-        // Age validation
         int age;
         while (true) {
             System.out.print("Enter student age: ");
@@ -86,7 +81,6 @@ public class Main {
             }
         }
 
-        // Email validation
         String email;
         while (true) {
             System.out.print("Enter student email: ");
@@ -98,7 +92,6 @@ public class Main {
             }
         }
 
-        // Phone validation
         String phone;
         while (true) {
             System.out.print("Enter student phone: ");
@@ -200,7 +193,6 @@ public class Main {
             return;
         }
 
-        // Grade validation
         double gradeValue;
         while (true) {
             System.out.print("Enter grade (0-100): ");
@@ -247,11 +239,9 @@ public class Main {
         System.out.println("Type: " + student.getStudentType() + " Student");
         System.out.println("Passing Grade: " + student.getPassingGrade() + "%");
 
-        // Get grades from GradeManager instead of student's list
         Grade[] allGrades = gradeManager.getGrades();
         boolean hasGrades = false;
 
-        // Check if student has any grades in GradeManager
         for (int i = 0; i < gradeManager.getGradeCount(); i++) {
             if (allGrades[i] != null && allGrades[i].getStudentId().equals(studentId)) {
                 hasGrades = true;
@@ -265,7 +255,6 @@ public class Main {
             System.out.printf("Current Average: %.1f%%\n", student.calculateAverageGrade());
             System.out.println("Status: " + (student.isPassing() ? "PASSING ✓" : "FAILING"));
 
-            // Use GradeManager to display grades
             gradeManager.viewGradesByStudent(studentId);
 
             double coreAvg = gradeManager.calculateCoreAverage(studentId);
@@ -308,7 +297,6 @@ public class Main {
         System.out.println("Goodbye!");
     }
 
-    // Validation methods
     private static boolean isValidName(String name) {
         return name != null && !name.trim().isEmpty() && NAME_PATTERN.matcher(name).matches();
     }

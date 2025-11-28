@@ -1,6 +1,6 @@
-package org.example;// StudentManager.java
-import java.util.ArrayList;
-import java.util.List;
+package org.example;
+//import java.util.ArrayList;
+//import java.util.List;
 
 public class StudentManager {
     private Student[] students;
@@ -16,14 +16,12 @@ public class StudentManager {
     }
 
     private void initializeSampleData() {
-        // Add 5 sample students (3 Regular, 2 Honors)
         addStudent(new RegularStudent("Alice Johnson", 16, "alice.johnson@school.edu", "+1-555-1001"));
         addStudent(new HonorsStudent("Bob Smith", 17, "bob.smith@school.edu", "+1-555-1002"));
         addStudent(new RegularStudent("Carol Martinez", 16, "carol.martinez@school.edu", "+1-555-1003"));
         addStudent(new HonorsStudent("David Chen", 17, "david.chen@school.edu", "+1-555-1004"));
         addStudent(new RegularStudent("Emma Wilson", 16, "emma.wilson@school.edu", "+1-555-1005"));
 
-        // Add sample grades directly to GradeManager
         gradeManager.addGrade(new Grade("STU001", new CoreSubject("Mathematics", "MATH101"), 85.0));
         gradeManager.addGrade(new Grade("STU001", new CoreSubject("English", "ENG101"), 78.0));
         gradeManager.addGrade(new Grade("STU001", new CoreSubject("Science", "SCI101"), 92.0));
@@ -40,7 +38,6 @@ public class StudentManager {
         gradeManager.addGrade(new Grade("STU005", new CoreSubject("English", "ENG101"), 67.0));
         gradeManager.addGrade(new Grade("STU005", new ElectiveSubject("Art", "ART101"), 70.0));
 
-        // Sync grades with students
         syncGradesWithStudents();
     }
 
@@ -73,7 +70,7 @@ public class StudentManager {
 
     public void viewAllStudents() {
         System.out.println("\nSTUDENT LISTING");
-        System.out.println("\nSTU ID | NAME           | TYPE    | AVG GRADE | STATUS");
+        System.out.println("\nSTU ID     | NAME                         | TYPE         | AVG GRADE    | STATUS");
         System.out.println("----------------------------------------------------------");
 
         for (int i = 0; i < studentCount; i++) {
@@ -85,7 +82,7 @@ public class StudentManager {
                 honorsInfo = ((HonorsStudent) student).checkHonorsEligibility() ? " | Honors Eligible" : "";
             }
 
-            System.out.printf("%-6s | %-14s | %-7s | %-9.1f%% | %s%s\n",
+            System.out.printf("%-6s    | %-14s    | %-7s    | %-9.1f%%    | %s%s\n",
                     student.getStudentId(),
                     student.getName(),
                     student.getStudentType(),
@@ -93,7 +90,7 @@ public class StudentManager {
                     status,
                     honorsInfo);
 
-            System.out.printf("      | Enrolled Subjects: %d | Passing Grade: %.0f%%%s\n",
+            System.out.printf("      | Enrolled Subjects: %d   | Passing Grade: %.0f%%%s\n",
                     student.getGrades().size(),
                     student.getPassingGrade(),
                     student instanceof HonorsStudent ? honorsInfo : "");
