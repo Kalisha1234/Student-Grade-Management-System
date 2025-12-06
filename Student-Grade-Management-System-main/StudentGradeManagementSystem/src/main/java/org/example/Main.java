@@ -25,7 +25,12 @@ public class Main {
             System.out.println("2. View Students");
             System.out.println("3. Record Grade");
             System.out.println("4. View Grade Report");
-            System.out.println("5. Exit");
+            System.out.println("5. Export Grade Report");
+            System.out.println("6. Calculate Student GPA");
+            System.out.println("7. Bulk Import Grades");
+            System.out.println("8. View Class Statistics");
+            System.out.println("9. Search Students");
+            System.out.println("1o. Exit");
             System.out.print("\nEnter choice: ");
 
             int choice = getIntInput();
@@ -44,8 +49,25 @@ public class Main {
                     viewGradeReport();
                     break;
                 case 5:
+
+                    //export grade report
+                case 6:
+                System.out.println("6. Calculate Student GPA");
+                break;
+                case 7:
+                System.out.println("7. Bulk Import Grades");
+                break;
+                case 8:
+                System.out.println("8. View Class Statistics");
+                break;
+                case 9:
+                System.out.println("9. Search Students");
+                break;
+                case 10:
+                System.out.println("10. Exit");
                     exitApplication();
-                    return;
+                System.out.print("\nEnter choice: ");
+                return;
                 default:
                     System.out.println("Invalid choice! Please enter 1-5.");
             }
