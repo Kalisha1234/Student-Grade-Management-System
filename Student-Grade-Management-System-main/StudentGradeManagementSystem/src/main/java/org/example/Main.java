@@ -18,6 +18,7 @@ public class Main {
 
     private static void displayMainMenu() {
         while (true) {
+            System.out.println("Bernison");
             System.out.println("\n==========================================");
             System.out.println("    STUDENT GRADE MANAGEMENT - MAIN MENU");
             System.out.println("==========================================");
