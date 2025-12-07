@@ -1,0 +1,8 @@
+=== SEARCH RESULTS REPORT ===
+
+Search Date: Sun Dec 07 15:50:30 GMT 2025
+Students Found: 1
+
+STU ID | NAME           | TYPE    | AVG GRADE | STATUS
+----------------------------------------------------------
+STU005 | Emma Wilson    | Regular | 0.0      % | Failing

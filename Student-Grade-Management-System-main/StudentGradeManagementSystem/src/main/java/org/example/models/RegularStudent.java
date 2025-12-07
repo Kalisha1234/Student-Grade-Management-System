@@ -1,9 +1,9 @@
-package org.example;
+package org.example.models;
 
-public class HonorsStudent extends Student {
-    private double passingGrade = 60.0;
+public class RegularStudent extends Student {
+    private double passingGrade = 50.0;
 
-    public HonorsStudent(String name, int age, String email, String phone) {
+    public RegularStudent(String name, int age, String email, String phone) {
         super(name, age, email, phone);
     }
 
@@ -15,21 +15,16 @@ public class HonorsStudent extends Student {
         System.out.println("Age: " + getAge());
         System.out.println("Email: " + getEmail());
         System.out.println("Passing Grade: " + getPassingGrade() + "%");
-        System.out.println("Honors Eligible: " + (checkHonorsEligibility() ? "Yes" : "No"));
         System.out.println("Status: " + getStatus());
     }
 
     @Override
     public String getStudentType() {
-        return "Honors";
+        return "Regular";
     }
 
     @Override
     public double getPassingGrade() {
         return passingGrade;
-    }
-
-    public boolean checkHonorsEligibility() {
-        return calculateAverageGrade() >= 85.0;
     }
 }
