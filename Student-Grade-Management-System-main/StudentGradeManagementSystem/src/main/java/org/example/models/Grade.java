@@ -1,4 +1,7 @@
-package org.example;
+package org.example.models;
+
+import org.example.interfaces.Gradable;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,10 +19,12 @@ public class Grade implements Gradable {
         this.subject = subject;
         this.grade = grade;
 
+        // Set current date
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         this.date = formatter.format(new Date());
     }
 
+    // Getters
     public String getGradeId() { return gradeId; }
     public String getStudentId() { return studentId; }
     public Subject getSubject() { return subject; }

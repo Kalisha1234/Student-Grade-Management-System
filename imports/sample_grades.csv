@@ -1,0 +1,26 @@
+StudentID,SubjectName,SubjectType,Grade
+STU001,Mathematics,Core,85
+STU001,English,Core,78
+STU001,Science,Core,92
+STU001,Music,Elective,88
+STU001,Art,Elective,75
+STU002,Mathematics,Core,92
+STU002,English,Core,88
+STU002,Science,Core,95
+STU002,Music,Elective,90
+STU002,Physical Education,Elective,85
+STU003,Mathematics,Core,45
+STU003,English,Core,50
+STU003,Science,Core,55
+STU003,Art,Elective,60
+STU003,Physical Education,Elective,65
+STU004,Mathematics,Core,95
+STU004,English,Core,92
+STU004,Science,Core,98
+STU004,Music,Elective,96
+STU004,Art,Elective,94
+STU005,Mathematics,Core,67
+STU005,English,Core,72
+STU005,Science,Core,70
+STU005,Music,Elective,75
+STU005,Physical Education,Elective,68

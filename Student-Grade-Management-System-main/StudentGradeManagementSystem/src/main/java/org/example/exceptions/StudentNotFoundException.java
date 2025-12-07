@@ -1,4 +1,4 @@
-package org.example;
+package org.example.exceptions;
 
 public class StudentNotFoundException extends Exception {
     private String studentId;

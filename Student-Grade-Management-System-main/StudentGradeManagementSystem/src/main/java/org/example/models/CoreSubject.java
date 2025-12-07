@@ -1,9 +1,9 @@
-package org.example;
+package org.example.models;
 
-public class ElectiveSubject extends Subject {
-    private boolean mandatory = false;
+public class CoreSubject extends Subject {
+    private boolean mandatory = true;
 
-    public ElectiveSubject(String subjectName, String subjectCode) {
+    public CoreSubject(String subjectName, String subjectCode) {
         super(subjectName, subjectCode);
     }
 
@@ -17,7 +17,7 @@ public class ElectiveSubject extends Subject {
 
     @Override
     public String getSubjectType() {
-        return "Elective";
+        return "Core";
     }
 
     public boolean isMandatory() {
