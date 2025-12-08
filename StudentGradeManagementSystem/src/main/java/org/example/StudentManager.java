@@ -25,18 +25,33 @@ public class StudentManager {
         gradeManager.addGrade(new Grade("STU001", new CoreSubject("Mathematics", "MATH101"), 85.0));
         gradeManager.addGrade(new Grade("STU001", new CoreSubject("English", "ENG101"), 78.0));
         gradeManager.addGrade(new Grade("STU001", new CoreSubject("Science", "SCI101"), 92.0));
+        gradeManager.addGrade(new Grade("STU001", new ElectiveSubject("Art", "ART101"), 65.0));
+        gradeManager.addGrade(new Grade("STU001", new ElectiveSubject("Music", "MUS101"), 73.0));
 
-        gradeManager.addGrade(new Grade("STU002", new CoreSubject("Mathematics", "MATH101"), 92.0));
-        gradeManager.addGrade(new Grade("STU002", new ElectiveSubject("Music", "MUS101"), 88.0));
+        gradeManager.addGrade(new Grade("STU002", new CoreSubject("Mathematics", "MATH101"), 88.0));
+        gradeManager.addGrade(new Grade("STU002", new CoreSubject("English", "ENG101"), 92.0));
+        gradeManager.addGrade(new Grade("STU002", new CoreSubject("Science", "SCI101"), 90.0));
+        gradeManager.addGrade(new Grade("STU002", new ElectiveSubject("Music", "MUS101"), 82.0));
+        gradeManager.addGrade(new Grade("STU002", new ElectiveSubject("Physical Education", "PE101"), 75.0));
+        gradeManager.addGrade(new Grade("STU002", new ElectiveSubject("Art", "ART101"), 84.0));
 
         gradeManager.addGrade(new Grade("STU003", new CoreSubject("Mathematics", "MATH101"), 45.0));
-        gradeManager.addGrade(new Grade("STU003", new CoreSubject("English", "ENG101"), 50.0));
+        gradeManager.addGrade(new Grade("STU003", new CoreSubject("English", "ENG101"), 48.0));
+        gradeManager.addGrade(new Grade("STU003", new CoreSubject("Science", "SCI101"), 42.0));
+        gradeManager.addGrade(new Grade("STU003", new ElectiveSubject("Art", "ART101"), 47.0));
 
         gradeManager.addGrade(new Grade("STU004", new CoreSubject("Mathematics", "MATH101"), 95.0));
-        gradeManager.addGrade(new Grade("STU004", new CoreSubject("Science", "SCI101"), 90.0));
+        gradeManager.addGrade(new Grade("STU004", new CoreSubject("English", "ENG101"), 93.0));
+        gradeManager.addGrade(new Grade("STU004", new CoreSubject("Science", "SCI101"), 94.0));
+        gradeManager.addGrade(new Grade("STU004", new ElectiveSubject("Music", "MUS101"), 91.0));
+        gradeManager.addGrade(new Grade("STU004", new ElectiveSubject("Physical Education", "PE101"), 88.0));
+        gradeManager.addGrade(new Grade("STU004", new ElectiveSubject("Art", "ART101"), 96.0));
 
-        gradeManager.addGrade(new Grade("STU005", new CoreSubject("English", "ENG101"), 67.0));
-        gradeManager.addGrade(new Grade("STU005", new ElectiveSubject("Art", "ART101"), 70.0));
+        gradeManager.addGrade(new Grade("STU005", new CoreSubject("Mathematics", "MATH101"), 65.0));
+        gradeManager.addGrade(new Grade("STU005", new CoreSubject("English", "ENG101"), 70.0));
+        gradeManager.addGrade(new Grade("STU005", new CoreSubject("Science", "SCI101"), 68.0));
+        gradeManager.addGrade(new Grade("STU005", new ElectiveSubject("Art", "ART101"), 72.0));
+        gradeManager.addGrade(new Grade("STU005", new ElectiveSubject("Music", "MUS101"), 60.0));
 
         syncGradesWithStudents();
     }
@@ -70,8 +85,11 @@ public class StudentManager {
 
     public void viewAllStudents() {
         System.out.println("\nSTUDENT LISTING");
-        System.out.println("\nSTU ID     | NAME                         | TYPE         | AVG GRADE    | STATUS");
-        System.out.println("----------------------------------------------------------");
+        System.out.println("________________________________________________________________________________");
+        System.out.println();
+        System.out.println("STU ID     | NAME                 | TYPE         | AVG GRADE    | STATUS");
+        System.out.println("________________________________________________________________________________");
+        System.out.println();
 
         for (int i = 0; i < studentCount; i++) {
             Student student = students[i];
@@ -82,7 +100,7 @@ public class StudentManager {
                 honorsInfo = ((HonorsStudent) student).checkHonorsEligibility() ? " | Honors Eligible" : "";
             }
 
-            System.out.printf("%-6s    | %-14s    | %-7s    | %-9.1f%%    | %s%s\n",
+            System.out.printf("%-10s | %-20s | %-12s | %6.1f%%     | %s%s\n",
                     student.getStudentId(),
                     student.getName(),
                     student.getStudentType(),
@@ -90,13 +108,15 @@ public class StudentManager {
                     status,
                     honorsInfo);
 
-            System.out.printf("      | Enrolled Subjects: %d   | Passing Grade: %.0f%%%s\n",
+            System.out.printf("           | Enrolled Subjects: %d | Passing Grade: %.0f%%%s\n",
                     student.getGrades().size(),
                     student.getPassingGrade(),
                     student instanceof HonorsStudent ? honorsInfo : "");
+            System.out.println("________________________________________________________________________________");
+            System.out.println();
         }
 
-        System.out.println("\nTotal Students: " + studentCount);
+        System.out.println("Total Students: " + studentCount);
         System.out.printf("Average Class Grade: %.1f%%\n", getAverageClassGrade());
     }
 
