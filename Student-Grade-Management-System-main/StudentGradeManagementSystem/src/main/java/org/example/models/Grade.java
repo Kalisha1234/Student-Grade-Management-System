@@ -6,11 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Grade implements Gradable {
-    private String gradeId;
-    private String studentId;
-    private Subject subject;
+    private final String gradeId;
+    private final String studentId;
+    private final Subject subject;
     private double grade;
-    private String date;
+    private final String date;
     private static int gradeCounter = 1;
 
     public Grade(String studentId, Subject subject, double grade) {

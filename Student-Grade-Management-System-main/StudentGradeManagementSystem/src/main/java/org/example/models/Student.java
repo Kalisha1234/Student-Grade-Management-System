@@ -11,8 +11,9 @@ public abstract class Student {
     private String phone;
     private String status;
     private static int studentCounter = 1;
-    private List<Grade> grades; // Add this field
-
+    //private List<Grade> grades;
+   //privateList<Grade> grades = new ArrayList<>(); // List to hold grade// s
+    List<Grade> grades = new ArrayList<>();
     public Student(String name, int age, String email, String phone) {
         this.studentId = "STU" + String.format("%03d", studentCounter++);
         this.name = name;

@@ -40,7 +40,7 @@ public class Main {
     private static void displayMainMenu() {
         while (true) {
             System.out.println("\n==========================================");
-            System.out.println("    ENHANCED STUDENT GRADE MANAGEMENT");
+            System.out.println("  STUDENT GRADE MANAGEMENT");
             System.out.println("==========================================");
             System.out.println("1. Add Student");
             System.out.println("2. View Students");
@@ -58,7 +58,7 @@ public class Main {
                 int choice = getIntInput();
 
                 switch (choice) {
-                    case 1: addStudent(); break;
+                    case 1: addStudent();break;
                     case 2: viewStudents(); break;
                     case 3: recordGrade(); break;
                     case 4: viewGradeReport(); break;
