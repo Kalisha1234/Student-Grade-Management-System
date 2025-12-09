@@ -203,6 +203,48 @@ public class EnhancedStudentManager implements Searchable {
         addStudent(new RegularStudent("Carol Martinez", 16, "carol.martinez@school.edu", "+1-555-1003"));
         addStudent(new HonorsStudent("David Chen", 17, "david.chen@school.edu", "+1-555-1004"));
         addStudent(new RegularStudent("Emma Wilson", 16, "emma.wilson@school.edu", "+1-555-1005"));
+        
+        // Add grades for each student to match expected averages
+        try {
+            // Alice Johnson (STU001) - Average: 78.5%
+            addGradeToStudent("STU001", new org.example.models.Grade("STU001", new org.example.models.CoreSubject("Mathematics", "MATH101"), 85.0));
+            addGradeToStudent("STU001", new org.example.models.Grade("STU001", new org.example.models.CoreSubject("English", "ENG101"), 78.0));
+            addGradeToStudent("STU001", new org.example.models.Grade("STU001", new org.example.models.CoreSubject("Science", "SCI101"), 92.0));
+            addGradeToStudent("STU001", new org.example.models.Grade("STU001", new org.example.models.ElectiveSubject("Art", "ART101"), 65.0));
+            addGradeToStudent("STU001", new org.example.models.Grade("STU001", new org.example.models.ElectiveSubject("Music", "MUS101"), 73.0));
+            
+            // Bob Smith (STU002) - Average: 85.2%
+            addGradeToStudent("STU002", new org.example.models.Grade("STU002", new org.example.models.CoreSubject("Mathematics", "MATH101"), 88.0));
+            addGradeToStudent("STU002", new org.example.models.Grade("STU002", new org.example.models.CoreSubject("English", "ENG101"), 92.0));
+            addGradeToStudent("STU002", new org.example.models.Grade("STU002", new org.example.models.CoreSubject("Science", "SCI101"), 90.0));
+            addGradeToStudent("STU002", new org.example.models.Grade("STU002", new org.example.models.ElectiveSubject("Music", "MUS101"), 82.0));
+            addGradeToStudent("STU002", new org.example.models.Grade("STU002", new org.example.models.ElectiveSubject("Physical Education", "PE101"), 75.0));
+            addGradeToStudent("STU002", new org.example.models.Grade("STU002", new org.example.models.ElectiveSubject("Art", "ART101"), 84.0));
+            
+            // Carol Martinez (STU003) - Average: 45.5%
+            addGradeToStudent("STU003", new org.example.models.Grade("STU003", new org.example.models.CoreSubject("Mathematics", "MATH101"), 45.0));
+            addGradeToStudent("STU003", new org.example.models.Grade("STU003", new org.example.models.CoreSubject("English", "ENG101"), 48.0));
+            addGradeToStudent("STU003", new org.example.models.Grade("STU003", new org.example.models.CoreSubject("Science", "SCI101"), 42.0));
+            addGradeToStudent("STU003", new org.example.models.Grade("STU003", new org.example.models.ElectiveSubject("Art", "ART101"), 47.0));
+            
+            // David Chen (STU004) - Average: 92.8%
+            addGradeToStudent("STU004", new org.example.models.Grade("STU004", new org.example.models.CoreSubject("Mathematics", "MATH101"), 95.0));
+            addGradeToStudent("STU004", new org.example.models.Grade("STU004", new org.example.models.CoreSubject("English", "ENG101"), 93.0));
+            addGradeToStudent("STU004", new org.example.models.Grade("STU004", new org.example.models.CoreSubject("Science", "SCI101"), 94.0));
+            addGradeToStudent("STU004", new org.example.models.Grade("STU004", new org.example.models.ElectiveSubject("Music", "MUS101"), 91.0));
+            addGradeToStudent("STU004", new org.example.models.Grade("STU004", new org.example.models.ElectiveSubject("Physical Education", "PE101"), 88.0));
+            addGradeToStudent("STU004", new org.example.models.Grade("STU004", new org.example.models.ElectiveSubject("Art", "ART101"), 96.0));
+            
+            // Emma Wilson (STU005) - Average: 67.0%
+            addGradeToStudent("STU005", new org.example.models.Grade("STU005", new org.example.models.CoreSubject("Mathematics", "MATH101"), 65.0));
+            addGradeToStudent("STU005", new org.example.models.Grade("STU005", new org.example.models.CoreSubject("English", "ENG101"), 70.0));
+            addGradeToStudent("STU005", new org.example.models.Grade("STU005", new org.example.models.CoreSubject("Science", "SCI101"), 68.0));
+            addGradeToStudent("STU005", new org.example.models.Grade("STU005", new org.example.models.ElectiveSubject("Art", "ART101"), 72.0));
+            addGradeToStudent("STU005", new org.example.models.Grade("STU005", new org.example.models.ElectiveSubject("Music", "MUS101"), 60.0));
+        } catch (StudentNotFoundException e) {
+            // This should not happen during initialization
+            System.err.println("Error initializing sample data: " + e.getMessage());
+        }
     }
 
     public void addStudent(Student student) {
@@ -218,8 +260,11 @@ public class EnhancedStudentManager implements Searchable {
 
     public void viewAllStudents() {
         System.out.println("\nSTUDENT LISTING");
-        System.out.println("\nSTU ID | NAME           | TYPE    | AVG GRADE | STATUS");
-        System.out.println("----------------------------------------------------------");
+        System.out.println("________________________________________________________________________________");
+        System.out.println();
+        System.out.println("STU ID     | NAME                 | TYPE         | AVG GRADE    | STATUS");
+        System.out.println("________________________________________________________________________________");
+        System.out.println();
 
         for (int i = 0; i < studentCount; i++) {
             Student student = students[i];
@@ -230,7 +275,7 @@ public class EnhancedStudentManager implements Searchable {
                 honorsInfo = ((HonorsStudent) student).checkHonorsEligibility() ? " | Honors Eligible" : "";
             }
 
-            System.out.printf("%-6s | %-14s | %-7s | %-9.1f%% | %s%s\n",
+            System.out.printf("%-10s | %-20s | %-12s | %6.1f%%     | %s%s\n",
                     student.getStudentId(),
                     student.getName(),
                     student.getStudentType(),
@@ -238,13 +283,15 @@ public class EnhancedStudentManager implements Searchable {
                     status,
                     honorsInfo);
 
-            System.out.printf("      | Enrolled Subjects: %d | Passing Grade: %.0f%%%s\n",
+            System.out.printf("           | Enrolled Subjects: %d | Passing Grade: %.0f%%%s\n",
                     student.getGrades().size(),
                     student.getPassingGrade(),
                     student instanceof HonorsStudent ? honorsInfo : "");
+            System.out.println("________________________________________________________________________________");
+            System.out.println();
         }
 
-        System.out.println("\nTotal Students: " + studentCount);
+        System.out.println("Total Students: " + studentCount);
         System.out.printf("Average Class Grade: %.1f%%\n", getAverageClassGrade());
     }
 

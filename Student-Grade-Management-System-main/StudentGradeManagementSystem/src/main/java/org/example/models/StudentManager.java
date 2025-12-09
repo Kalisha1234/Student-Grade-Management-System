@@ -22,37 +22,41 @@ public class StudentManager {
         addStudent(new HonorsStudent("David Chen", 17, "david.chen@school.edu", "+1-555-1004"));
         addStudent(new RegularStudent("Emma Wilson", 16, "emma.wilson@school.edu", "+1-555-1005"));
 //
-        // Initialize grades for Alice Johnson (STU001)
+        // Initialize grades for Alice Johnson (STU001) - Average should be 78.5%
         gradeManager.addGrade(new Grade("STU001", new CoreSubject("Mathematics", "MATH101"), 85.0));
         gradeManager.addGrade(new Grade("STU001", new CoreSubject("English", "ENG101"), 78.0));
         gradeManager.addGrade(new Grade("STU001", new CoreSubject("Science", "SCI101"), 92.0));
-        gradeManager.addGrade(new Grade("STU001", new ElectiveSubject("Music", "MUS101"), 88.0));
-        gradeManager.addGrade(new Grade("STU001", new ElectiveSubject("Art", "ART101"), 91.0));
-//
-//        // Initialize grades for Bob Smith (STU002)
-        gradeManager.addGrade(new Grade("STU002", new CoreSubject("Mathematics", "MATH101"), 92.0));
-        gradeManager.addGrade(new Grade("STU002", new CoreSubject("English", "ENG101"), 88.0));
-        gradeManager.addGrade(new Grade("STU002", new CoreSubject("Science", "SCI101"), 95.0));
-        gradeManager.addGrade(new Grade("STU002", new ElectiveSubject("Music", "MUS101"), 90.0));
-//
-//        // Initialize grades for Carol Martinez (STU003)
-        gradeManager.addGrade(new Grade("STU003", new CoreSubject("Mathematics", "MATH101"), 45.0));
-        gradeManager.addGrade(new Grade("STU003", new CoreSubject("English", "ENG101"), 50.0));
-        gradeManager.addGrade(new Grade("STU003", new CoreSubject("Science", "SCI101"), 55.0));
-        gradeManager.addGrade(new Grade("STU003", new ElectiveSubject("Physical Education", "PE101"), 60.0));
+        gradeManager.addGrade(new Grade("STU001", new ElectiveSubject("Art", "ART101"), 65.0));
+        gradeManager.addGrade(new Grade("STU001", new ElectiveSubject("Music", "MUS101"), 73.0));
 
-//        // Initialize grades for David Chen (STU004)
+        // Initialize grades for Bob Smith (STU002) - Average should be 85.2%
+        gradeManager.addGrade(new Grade("STU002", new CoreSubject("Mathematics", "MATH101"), 88.0));
+        gradeManager.addGrade(new Grade("STU002", new CoreSubject("English", "ENG101"), 92.0));
+        gradeManager.addGrade(new Grade("STU002", new CoreSubject("Science", "SCI101"), 90.0));
+        gradeManager.addGrade(new Grade("STU002", new ElectiveSubject("Music", "MUS101"), 82.0));
+        gradeManager.addGrade(new Grade("STU002", new ElectiveSubject("Physical Education", "PE101"), 75.0));
+        gradeManager.addGrade(new Grade("STU002", new ElectiveSubject("Art", "ART101"), 84.0));
+
+        // Initialize grades for Carol Martinez (STU003) - Average should be 45.0%
+        gradeManager.addGrade(new Grade("STU003", new CoreSubject("Mathematics", "MATH101"), 45.0));
+        gradeManager.addGrade(new Grade("STU003", new CoreSubject("English", "ENG101"), 48.0));
+        gradeManager.addGrade(new Grade("STU003", new CoreSubject("Science", "SCI101"), 42.0));
+        gradeManager.addGrade(new Grade("STU003", new ElectiveSubject("Art", "ART101"), 47.0));
+
+        // Initialize grades for David Chen (STU004) - Average should be 92.8%
         gradeManager.addGrade(new Grade("STU004", new CoreSubject("Mathematics", "MATH101"), 95.0));
-        gradeManager.addGrade(new Grade("STU004", new CoreSubject("English", "ENG101"), 92.0));
-        gradeManager.addGrade(new Grade("STU004", new CoreSubject("Science", "SCI101"), 98.0));
+        gradeManager.addGrade(new Grade("STU004", new CoreSubject("English", "ENG101"), 93.0));
+        gradeManager.addGrade(new Grade("STU004", new CoreSubject("Science", "SCI101"), 94.0));
+        gradeManager.addGrade(new Grade("STU004", new ElectiveSubject("Music", "MUS101"), 91.0));
+        gradeManager.addGrade(new Grade("STU004", new ElectiveSubject("Physical Education", "PE101"), 88.0));
         gradeManager.addGrade(new Grade("STU004", new ElectiveSubject("Art", "ART101"), 96.0));
 
-//        // Initialize grades for Emma Wilson (STU005)
-        gradeManager.addGrade(new Grade("STU005", new CoreSubject("Mathematics", "MATH101"), 67.0));
-        gradeManager.addGrade(new Grade("STU005", new CoreSubject("English", "EN" +
-                "G101"), 72.0));
-        gradeManager.addGrade(new Grade("STU005", new CoreSubject("Science", "SCI101"), 70.0));
-        gradeManager.addGrade(new Grade("STU005", new ElectiveSubject("Music", "MUS101"), 75.0));
+        // Initialize grades for Emma Wilson (STU005) - Average should be 67.0%
+        gradeManager.addGrade(new Grade("STU005", new CoreSubject("Mathematics", "MATH101"), 65.0));
+        gradeManager.addGrade(new Grade("STU005", new CoreSubject("English", "ENG101"), 70.0));
+        gradeManager.addGrade(new Grade("STU005", new CoreSubject("Science", "SCI101"), 68.0));
+        gradeManager.addGrade(new Grade("STU005", new ElectiveSubject("Art", "ART101"), 72.0));
+        gradeManager.addGrade(new Grade("STU005", new ElectiveSubject("Music", "MUS101"), 60.0));
 
         // Sync grades with students
      syncGradesWithStudents();
@@ -87,8 +91,11 @@ public class StudentManager {
 
     public void viewAllStudents() {
         System.out.println("\nSTUDENT LISTING");
-        System.out.println("\nSTU ID     | NAME                         | TYPE         | AVG GRADE    | STATUS    | ENROLLED | PASSING | HONORS");
-        System.out.println("-------------------------------------------------------------------------------------------------------------");
+        System.out.println("________________________________________________________________________________");
+        System.out.println();
+        System.out.println("STU ID     | NAME                 | TYPE         | AVG GRADE    | STATUS");
+        System.out.println("________________________________________________________________________________");
+        System.out.println();
 
         for (int i = 0; i < studentCount; i++) {
             Student student = students[i];
@@ -98,27 +105,30 @@ public class StudentManager {
             double average = gradeManager.calculateOverallAverage(student.getStudentId());
 
             String status = (average >= student.getPassingGrade()) ? "Passing" : "Failing";
-            String honorsFlag = "";
+            String honorsInfo = "";
+            
             if (student instanceof HonorsStudent) {
                 // Determine honors eligibility from the calculated average (Honors rule: >= 85)
                 boolean honorsEligible = average >= 85.0;
-                honorsFlag = honorsEligible ? "Yes" : "No";
-            } else {
-                honorsFlag = "-";
+                honorsInfo = honorsEligible ? " | Honors Eligible" : "";
             }
 
-            System.out.printf("%-10s | %-25s | %-12s | %-9.1f%% | %-8s | %-7d | %-7.0f%% | %-6s\n",
+            System.out.printf("%-10s | %-20s | %-12s | %6.1f%%     | %s%s\n",
                     student.getStudentId(),
                     student.getName(),
                     student.getStudentType(),
                     average,
                     status,
+                    honorsInfo);
+
+            System.out.printf("           | Enrolled Subjects: %d | Passing Grade: %.0f%%%s\n",
                     enrolledSubjects,
                     student.getPassingGrade(),
-                    honorsFlag);
+                    student instanceof HonorsStudent ? honorsInfo : "");
+            System.out.println("________________________________________________________________________________");
+            System.out.println();
         }
 
-        System.out.println("\nSUMMARY:");
         System.out.println("Total Students: " + studentCount);
 
         // Compute class average using GradeManager (average of student averages)
@@ -128,25 +138,6 @@ public class StudentManager {
         }
         double classAvg = studentCount > 0 ? classSum / studentCount : 0.0;
         System.out.printf("Average Class Grade: %.1f%%\n", classAvg);
-
-        // Show grade distribution
-        System.out.println("\nGRADE DISTRIBUTION BY STUDENT:");
-        for (int i = 0; i < studentCount; i++) {
-            Student student = students[i];
-            int enrolled = gradeManager.getGradeCountForStudent(student.getStudentId());
-            double avg = gradeManager.calculateOverallAverage(student.getStudentId());
-            String honors = "";
-            if (student instanceof HonorsStudent) {
-                honors = (avg >= 85.0) ? " | Honors Eligible" : "";
-            }
-            System.out.printf("%s (%s): %d grades, Average: %.1f%%, Passing Grade: %.0f%%%s\n",
-                    student.getName(),
-                    student.getStudentId(),
-                    enrolled,
-                    avg,
-                    student.getPassingGrade(),
-                    honors);
-        }
     }
 
     public double getAverageClassGrade() {

@@ -16,8 +16,6 @@ public class GradeManager {
     public void addGrade(Grade grade) {
         if (gradeCount < MAX_GRADES) {
             grades[gradeCount++] = grade;
-            System.out.println("✓ Grade added: " + grade.getGradeId() + " for student " +
-                    grade.getStudentId() + " in " + grade.getSubject().getSubjectName());
         } else {
             System.out.println("✗ Grade limit reached! Cannot add more grades.");
         }
