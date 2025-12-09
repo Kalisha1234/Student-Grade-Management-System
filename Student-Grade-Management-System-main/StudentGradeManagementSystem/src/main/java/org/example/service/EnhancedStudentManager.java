@@ -203,7 +203,19 @@ public class EnhancedStudentManager implements Searchable {
         addStudent(new RegularStudent("Carol Martinez", 16, "carol.martinez@school.edu", "+1-555-1003"));
         addStudent(new HonorsStudent("David Chen", 17, "david.chen@school.edu", "+1-555-1004"));
         addStudent(new RegularStudent("Emma Wilson", 16, "emma.wilson@school.edu", "+1-555-1005"));
-        
+        addStudent(new HonorsStudent("Banks Mill", 19, "banksmill@school.edu", "+1-555-1223"));
+        // Add 5 sample students (3 Regular, 2 Honors)
+        addStudent(new RegularStudent("Nece Kalisha", 18, "necekalisha@school.edu", "+1-203-1071"));
+        addStudent(new HonorsStudent("Bright Tank", 16, "brighttank@school.edu", "+1-550-1122"));
+        addStudent(new RegularStudent("Nece Alisha", 19, "necealisha@school.edu", "+1-567-1233"));
+        addStudent(new HonorsStudent(" Brooke Melendez", 17, "brookemelendez@school.edu", "+1-324-1434"));
+
+        //students with incorrect ID and grade more than 100zl
+        addStudent(new RegularStudent("Beauty Bri", 18, "beautybri@school.edu", "+1-666-6666"));
+        addStudent(new HonorsStudent("Banny Banv", 19, "bannybanv@school.edu", "+1-555-1009"));
+
+
+
         // Add grades for each student to match expected averages
         try {
             // Alice Johnson (STU001) - Average: 78.5%
@@ -241,6 +253,13 @@ public class EnhancedStudentManager implements Searchable {
             addGradeToStudent("STU005", new org.example.models.Grade("STU005", new org.example.models.CoreSubject("Science", "SCI101"), 68.0));
             addGradeToStudent("STU005", new org.example.models.Grade("STU005", new org.example.models.ElectiveSubject("Art", "ART101"), 72.0));
             addGradeToStudent("STU005", new org.example.models.Grade("STU005", new org.example.models.ElectiveSubject("Music", "MUS101"), 60.0));
+
+            addGradeToStudent("STU006", new org.example.models.Grade("STU006", new org.example.models.CoreSubject("Mathematics", "MATH101"), 95.0));
+            addGradeToStudent("STU006", new org.example.models.Grade("STU006", new org.example.models.CoreSubject("English", "ENG101"), 93.0));
+            addGradeToStudent("STU006", new org.example.models.Grade("STU006", new org.example.models.CoreSubject("Science", "SCI101"), 94.0));
+            addGradeToStudent("STU006", new org.example.models.Grade("STU006", new org.example.models.ElectiveSubject("Music", "MUS101"), 91.0));
+           // addGradeToStudent("STU006", new org.example.models.Grade("STU006", new org.example.models.ElectiveSubject("Physical Education", "PE101"), 88.0));
+            addGradeToStudent("STU006", new org.example.models.Grade("STU006", new org.example.models.ElectiveSubject("Art", "ART101"), 96.0));
         } catch (StudentNotFoundException e) {
             // This should not happen during initialization
             System.err.println("Error initializing sample data: " + e.getMessage());

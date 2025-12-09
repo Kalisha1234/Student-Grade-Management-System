@@ -53,7 +53,12 @@ public class GenerateSampleCSV {
                 new String[]{"STU005", "English", "Core", "72"},
                 new String[]{"STU005", "Science", "Core", "70"},
                 new String[]{"STU005", "Music", "Elective", "75"},
-                new String[]{"STU005", "Physical Education", "Elective", "68"}
+                new String[]{"STU005", "Physical Education", "Elective", "68"},
+                new String[]{"STU006", "Mathematics", "Core", "95"},
+                new String[]{"STU006", "English", "Core", "93"},
+                new String[]{"STU006", "Science", "Core", "94"},
+                new String[]{"STU006", "Music", "Elective", "91"},
+                new String[]{"STU006", "Art", "Elective", "88"}
         );
 
         for (String[] row : gradeData) {
