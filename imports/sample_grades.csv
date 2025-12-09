@@ -19,8 +19,10 @@ STU004,English,Core,92
 STU004,Science,Core,98
 STU004,Music,Elective,96
 STU004,Art,Elective,94
-STU005,Mathematics,Core,67
-STU005,English,Core,72
-STU005,Science,Core,70
-STU005,Music,Elective,75
-STU005,Physical Education,Elective,68
+STU004,Physical Education,Elective,97
+STU005,Mathematics,Core,88
+STU005,English,Core,85
+STU005,Science,Core,90
+STU005,Music,Elective,87
+STU005,Art,Elective,89
+STU005,Physical Education,Elective,91
