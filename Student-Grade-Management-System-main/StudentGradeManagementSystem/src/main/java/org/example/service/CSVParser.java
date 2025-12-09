@@ -22,8 +22,8 @@ public class CSVParser {
             while ((line = reader.readLine()) != null) {
                 rowNumber++;
 
-                // Skip empty lines
-                if (line.trim().isEmpty()) continue;
+                // Skip header row and empty lines
+                if (rowNumber == 1 || line.trim().isEmpty()) continue;
 
                 try {
                     GradeRecord record = parseLine(line, rowNumber);
