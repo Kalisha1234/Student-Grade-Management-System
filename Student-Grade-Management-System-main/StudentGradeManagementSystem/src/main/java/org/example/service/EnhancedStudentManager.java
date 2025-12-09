@@ -260,6 +260,42 @@ public class EnhancedStudentManager implements Searchable {
             addGradeToStudent("STU006", new org.example.models.Grade("STU006", new org.example.models.ElectiveSubject("Music", "MUS101"), 91.0));
            // addGradeToStudent("STU006", new org.example.models.Grade("STU006", new org.example.models.ElectiveSubject("Physical Education", "PE101"), 88.0));
             addGradeToStudent("STU006", new org.example.models.Grade("STU006", new org.example.models.ElectiveSubject("Art", "ART101"), 96.0));
+
+            // Nece Kalisha (STU007) - Average: 86.5%
+            addGradeToStudent("STU007", new org.example.models.Grade("STU007", new org.example.models.CoreSubject("Mathematics", "MATH101"), 88.0));
+            addGradeToStudent("STU007", new org.example.models.Grade("STU007", new org.example.models.CoreSubject("English", "ENG101"), 85.0));
+            addGradeToStudent("STU007", new org.example.models.Grade("STU007", new org.example.models.CoreSubject("Science", "SCI101"), 87.0));
+            addGradeToStudent("STU007", new org.example.models.Grade("STU007", new org.example.models.ElectiveSubject("Music", "MUS101"), 86.0));
+
+            // Bright Tank (STU008) - Average: 91.0%
+            addGradeToStudent("STU008", new org.example.models.Grade("STU008", new org.example.models.CoreSubject("Mathematics", "MATH101"), 92.0));
+            addGradeToStudent("STU008", new org.example.models.Grade("STU008", new org.example.models.CoreSubject("English", "ENG101"), 90.0));
+            addGradeToStudent("STU008", new org.example.models.Grade("STU008", new org.example.models.CoreSubject("Science", "SCI101"), 93.0));
+            addGradeToStudent("STU008", new org.example.models.Grade("STU008", new org.example.models.ElectiveSubject("Art", "ART101"), 89.0));
+
+            // Nece Alisha (STU009) - Average: 75.0%
+            addGradeToStudent("STU009", new org.example.models.Grade("STU009", new org.example.models.CoreSubject("Mathematics", "MATH101"), 76.0));
+            addGradeToStudent("STU009", new org.example.models.Grade("STU009", new org.example.models.CoreSubject("English", "ENG101"), 74.0));
+            addGradeToStudent("STU009", new org.example.models.Grade("STU009", new org.example.models.CoreSubject("Science", "SCI101"), 75.0));
+            addGradeToStudent("STU009", new org.example.models.Grade("STU009", new org.example.models.ElectiveSubject("Physical Education", "PE101"), 75.0));
+
+            // Brooke Melendez (STU010) - Average: 88.0%
+            addGradeToStudent("STU010", new org.example.models.Grade("STU010", new org.example.models.CoreSubject("Mathematics", "MATH101"), 89.0));
+            addGradeToStudent("STU010", new org.example.models.Grade("STU010", new org.example.models.CoreSubject("English", "ENG101"), 87.0));
+            addGradeToStudent("STU010", new org.example.models.Grade("STU010", new org.example.models.CoreSubject("Science", "SCI101"), 88.0));
+            addGradeToStudent("STU010", new org.example.models.Grade("STU010", new org.example.models.ElectiveSubject("Music", "MUS101"), 88.0));
+
+            // Beauty Bri (STU011) - Average: 82.0%
+            addGradeToStudent("STU011", new org.example.models.Grade("STU011", new org.example.models.CoreSubject("Mathematics", "MATH101"), 83.0));
+            addGradeToStudent("STU011", new org.example.models.Grade("STU011", new org.example.models.CoreSubject("English", "ENG101"), 81.0));
+            addGradeToStudent("STU011", new org.example.models.Grade("STU011", new org.example.models.CoreSubject("Science", "SCI101"), 82.0));
+            addGradeToStudent("STU011", new org.example.models.Grade("STU011", new org.example.models.ElectiveSubject("Art", "ART101"), 82.0));
+
+            // Banny Banv (STU012) - Average: 90.0%
+            addGradeToStudent("STU012", new org.example.models.Grade("STU012", new org.example.models.CoreSubject("Mathematics", "MATH101"), 91.0));
+            addGradeToStudent("STU012", new org.example.models.Grade("STU012", new org.example.models.CoreSubject("English", "ENG101"), 89.0));
+            addGradeToStudent("STU012", new org.example.models.Grade("STU012", new org.example.models.CoreSubject("Science", "SCI101"), 90.0));
+            addGradeToStudent("STU012", new org.example.models.Grade("STU012", new org.example.models.ElectiveSubject("Physical Education", "PE101"), 90.0));
         } catch (StudentNotFoundException e) {
             // This should not happen during initialization
             System.err.println("Error initializing sample data: " + e.getMessage());
