@@ -2,6 +2,8 @@ package org.example.service;
 
 import org.example.exceptions.StudentNotFoundException;
 import org.example.interfaces.Exportable;
+import org.example.models.Grade;
+import org.example.models.HonorsStudent;
 import org.example.models.Student;
 
 import java.io.*;
@@ -16,11 +18,16 @@ public class FileExporter implements Exportable {
 
     private ReportGenerator reportGenerator;
     private GPACalculator gpaCalculator;
+    private EnhancedStudentManager studentManager;
 
     public FileExporter(ReportGenerator reportGenerator, GPACalculator gpaCalculator) {
         this.reportGenerator = reportGenerator;
         this.gpaCalculator = gpaCalculator;
         createDirectories();
+    }
+
+    public void setStudentManager(EnhancedStudentManager studentManager) {
+        this.studentManager = studentManager;
     }
 
     private void createDirectories() {
@@ -32,20 +39,110 @@ public class FileExporter implements Exportable {
     @Override
     public void exportSummaryReport(String studentId, String filename)
             throws IOException, StudentNotFoundException {
-        // In a complete implementation, this would get student from StudentManager
-        // For now, we'll create a dummy implementation
-        String report = "Summary report for student ID: " + studentId + "\n";
-        report += "Generated on: " + new Date() + "\n";
-        writeToFile(REPORTS_DIR + filename + "_summary.txt", report);
+        if (studentManager == null) {
+            throw new IllegalStateException("StudentManager not set. Call setStudentManager() first.");
+        }
+        
+        Student student = studentManager.searchById(studentId);
+        StringBuilder report = new StringBuilder();
+        
+        report.append("==========================================\n");
+        report.append("       STUDENT SUMMARY REPORT\n");
+        report.append("==========================================\n\n");
+        report.append("Generated on: ").append(new Date()).append("\n\n");
+        
+        report.append("STUDENT: ").append(student.getName()).append("\n");
+        report.append("ID: ").append(student.getStudentId()).append("\n");
+        report.append("Type: ").append(student.getStudentType()).append(" Student\n\n");
+        
+        report.append("PERFORMANCE OVERVIEW\n");
+        report.append("-------------------\n");
+        report.append(String.format("Total Subjects: %d\n", student.getGrades().size()));
+        report.append(String.format("Average Grade: %.1f%%\n", student.calculateAverageGrade()));
+        report.append(String.format("Letter Grade: %s\n", 
+            gpaCalculator.convertPercentageToLetterGrade(student.calculateAverageGrade())));
+        report.append("Status: ").append(student.isPassing() ? "Passing" : "Failing").append("\n");
+        
+        if (student instanceof HonorsStudent) {
+            HonorsStudent honorsStudent = (HonorsStudent) student;
+            report.append("Honors Eligible: ")
+                .append(honorsStudent.checkHonorsEligibility() ? "Yes" : "No")
+                .append("\n");
+        }
+        
+        report.append("\n==========================================\n");
+        
+        writeToFile(REPORTS_DIR + filename + "_summary.txt", report.toString());
     }
 
     @Override
     public void exportDetailedReport(String studentId, String filename)
             throws IOException, StudentNotFoundException {
-        String report = "Detailed report for student ID: " + studentId + "\n";
-        report += "Generated on: " + new Date() + "\n";
-        report += "This would contain all grade details, averages, and analysis.\n";
-        writeToFile(REPORTS_DIR + filename + "_detailed.txt", report);
+        if (studentManager == null) {
+            throw new IllegalStateException("StudentManager not set. Call setStudentManager() first.");
+        }
+        
+        Student student = studentManager.searchById(studentId);
+        StringBuilder report = new StringBuilder();
+        
+        report.append("==========================================\n");
+        report.append("       DETAILED GRADE REPORT\n");
+        report.append("==========================================\n\n");
+        report.append("Generated on: ").append(new Date()).append("\n\n");
+        
+        report.append("STUDENT INFORMATION\n");
+        report.append("-------------------\n");
+        report.append("Student ID: ").append(student.getStudentId()).append("\n");
+        report.append("Name: ").append(student.getName()).append("\n");
+        report.append("Age: ").append(student.getAge()).append("\n");
+        report.append("Email: ").append(student.getEmail()).append("\n");
+        report.append("Phone: ").append(student.getPhone()).append("\n");
+        report.append("Type: ").append(student.getStudentType()).append(" Student\n");
+        report.append("Passing Grade: ").append(student.getPassingGrade()).append("%\n\n");
+        
+        report.append("GRADE DETAILS\n");
+        report.append("-------------------\n");
+        report.append(String.format("%-20s | %-12s | %-8s | %s\n", 
+            "Subject", "Type", "Grade", "Letter"));
+        report.append("------------------------------------------------------------\n");
+        
+        List<Grade> grades = student.getGrades();
+        if (grades.isEmpty()) {
+            report.append("No grades recorded yet.\n\n");
+        } else {
+            for (Grade grade : grades) {
+                String letterGrade = gpaCalculator.convertPercentageToLetterGrade(grade.getGrade());
+                report.append(String.format("%-20s | %-12s | %6.1f%% | %s\n",
+                    grade.getSubject().getSubjectName(),
+                    grade.getSubject().getSubjectType(),
+                    grade.getGrade(),
+                    letterGrade));
+            }
+            report.append("\n");
+        }
+        
+        report.append("PERFORMANCE SUMMARY\n");
+        report.append("-------------------\n");
+        report.append(String.format("Total Subjects: %d\n", grades.size()));
+        report.append(String.format("Average Grade: %.1f%%\n", student.calculateAverageGrade()));
+        report.append(String.format("Overall Letter Grade: %s\n", 
+            gpaCalculator.convertPercentageToLetterGrade(student.calculateAverageGrade())));
+        report.append(String.format("GPA (4.0 Scale): %.2f\n", 
+            gpaCalculator.calculateCumulativeGPA(grades.stream()
+                .map(Grade::getGrade)
+                .collect(java.util.stream.Collectors.toList()))));
+        report.append("Status: ").append(student.isPassing() ? "Passing" : "Failing").append("\n");
+        
+        if (student instanceof HonorsStudent) {
+            HonorsStudent honorsStudent = (HonorsStudent) student;
+            report.append("Honors Eligibility: ")
+                .append(honorsStudent.checkHonorsEligibility() ? "Yes" : "No")
+                .append("\n");
+        }
+        
+        report.append("\n==========================================\n");
+        
+        writeToFile(REPORTS_DIR + filename + "_detailed.txt", report.toString());
     }
 
     @Override

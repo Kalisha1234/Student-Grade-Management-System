@@ -1,0 +1,18 @@
+==========================================
+       STUDENT SUMMARY REPORT
+==========================================
+
+Generated on: Wed Dec 10 07:33:43 GMT 2025
+
+STUDENT: Alice Johnson
+ID: STU001
+Type: Regular Student
+
+PERFORMANCE OVERVIEW
+-------------------
+Total Subjects: 5
+Average Grade: 78.6%
+Letter Grade: C+
+Status: Passing
+
+==========================================

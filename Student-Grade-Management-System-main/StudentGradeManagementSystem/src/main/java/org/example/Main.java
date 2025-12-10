@@ -33,6 +33,7 @@ public class Main {
         gpaCalculator = new GPACalculator();
         reportGenerator = new ReportGenerator();
         fileExporter = new FileExporter(reportGenerator, gpaCalculator);
+        fileExporter.setStudentManager(studentManager);
         bulkImportService = new BulkImportService(studentManager, csvParser, fileExporter);
         scanner = new Scanner(System.in);
     }
