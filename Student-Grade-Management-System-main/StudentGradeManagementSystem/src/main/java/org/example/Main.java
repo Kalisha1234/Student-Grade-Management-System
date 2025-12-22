@@ -18,6 +18,7 @@ public class Main {
     private static GPACalculator gpaCalculator;
     private static ReportGenerator reportGenerator;
     private static EnhancedFileOperations enhancedFileOps;
+    private static ConcurrentReportGenerator concurrentReportGenerator;
     private static Scanner scanner;
 
     // Validation patterns
@@ -37,6 +38,7 @@ public class Main {
         reportGenerator = new ReportGenerator();
         fileExporter = new FileExporter(reportGenerator, gpaCalculator);
         fileExporter.setStudentManager(studentManager);
+        concurrentReportGenerator = new ConcurrentReportGenerator(fileExporter, studentManager);
         bulkImportService = new BulkImportService(studentManager, csvParser, fileExporter);
         
         try {
@@ -66,7 +68,8 @@ public class Main {
             System.out.println("9. View Class Statistics");
             System.out.println("10. Search Students");
             System.out.println("11. File Operations");
-            System.out.println("12. Exit");
+            System.out.println("12. Batch Report Generation");
+            System.out.println("13. Exit");
             System.out.print("\nEnter choice: ");
 
             try {
@@ -84,8 +87,9 @@ public class Main {
                     case 9: viewClassStatistics(); break;
                     case 10: searchStudents(); break;
                     case 11: fileOperationsMenu(); break;
-                    case 12: exitApplication(); return;
-                    default: System.out.println("Invalid choice! Please enter 1-12.");
+                    case 12: batchReportGeneration(); break;
+                    case 13: exitApplication(); return;
+                    default: System.out.println("Invalid choice! Please enter 1-13.");
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
@@ -226,7 +230,7 @@ public class Main {
 
                 int coreChoice = getIntInput();
                 switch (coreChoice) {
-                    case 1: subject = new CoreSubject("Mathematics", "MATH101"); break;
+                    case 1: subject = new CoreSubject("Mathematics", "MAT101"); break;
                     case 2: subject = new CoreSubject("English", "ENG101"); break;
                     case 3: subject = new CoreSubject("Science", "SCI101"); break;
                     default:
@@ -244,7 +248,7 @@ public class Main {
                 switch (electiveChoice) {
                     case 1: subject = new ElectiveSubject("Music", "MUS101"); break;
                     case 2: subject = new ElectiveSubject("Art", "ART101"); break;
-                    case 3: subject = new ElectiveSubject("Physical Education", "PE101"); break;
+                    case 3: subject = new ElectiveSubject("Physical Education", "PHY101"); break;
                     default:
                         System.out.println("Invalid choice!");
                         return;
@@ -746,6 +750,76 @@ public class Main {
             enhancedFileOps.displayFormatComparison(studentId);
         } catch (Exception e) {
             System.out.println("\n✗ Error: " + e.getMessage());
+        }
+    }
+
+    private static void batchReportGeneration() {
+        System.out.println("\nBATCH REPORT GENERATION");
+        System.out.println();
+        
+        System.out.println("Generate reports for:");
+        System.out.println("1. All students");
+        System.out.println("2. Students by type (Regular/Honors)");
+        System.out.println("3. Students by grade range");
+        System.out.print("\nSelect option (1-3): ");
+        
+        int option = getIntInput();
+        List<Student> students = new ArrayList<>();
+        
+        switch (option) {
+            case 1:
+                students = studentManager.getAllStudents();
+                break;
+            case 2:
+                System.out.print("Enter student type (Regular/Honors): ");
+                String type = scanner.nextLine();
+                students = studentManager.searchByType(type);
+                break;
+            case 3:
+                System.out.print("Enter minimum grade: ");
+                double min = getDoubleInput();
+                System.out.print("Enter maximum grade: ");
+                double max = getDoubleInput();
+                students = studentManager.searchByGradeRange(min, max);
+                break;
+            default:
+                System.out.println("Invalid option!");
+                return;
+        }
+        
+        if (students.isEmpty()) {
+            System.out.println("No students found for batch report generation.");
+            return;
+        }
+        
+        System.out.println("\nFound " + students.size() + " students for batch processing.");
+        
+        System.out.println("\nReport type:");
+        System.out.println("1. Summary reports");
+        System.out.println("2. Detailed reports");
+        System.out.print("Select type (1-2): ");
+        
+        int reportTypeChoice = getIntInput();
+        String reportType = reportTypeChoice == 1 ? "summary" : "detailed";
+        
+        System.out.print("Enter number of threads (2-8): ");
+        int threadCount = getIntInput();
+        
+        try {
+            List<String> studentIds = students.stream()
+                .map(Student::getStudentId)
+                .collect(java.util.stream.Collectors.toList());
+                
+            BatchReportResult result = concurrentReportGenerator.generateBatchReports(studentIds, reportType, threadCount);
+            
+            System.out.println("\n✓ Batch report generation completed!");
+            System.out.println("Total reports: " + result.getTotalReports());
+            System.out.println("Successful: " + result.getSuccessfulReports());
+            System.out.println("Failed: " + result.getFailedReports());
+            System.out.println("Total time: " + result.getTotalTimeMs() + "ms");
+            System.out.println("Threads used: " + result.getThreadsUsed());
+        } catch (Exception e) {
+            System.out.println("\n✗ Error generating batch reports: " + e.getMessage());
         }
     }
 

@@ -219,75 +219,76 @@ public class EnhancedStudentManager implements Searchable {
         addStudent(new HonorsStudent("Banny Banv", 19, "bannybanv@school.edu", "+1-555-1009"));
 
         try {
-            addGradeToStudent("STU001", new Grade("STU001", new CoreSubject("Mathematics", "MATH101"), 85.0));
+            addGradeToStudent("STU001", new Grade("STU001", new CoreSubject("Mathematics", "MAT101"), 85.0));
             addGradeToStudent("STU001", new Grade("STU001", new CoreSubject("English", "ENG101"), 78.0));
             addGradeToStudent("STU001", new Grade("STU001", new CoreSubject("Science", "SCI101"), 92.0));
             addGradeToStudent("STU001", new Grade("STU001", new ElectiveSubject("Art", "ART101"), 65.0));
             addGradeToStudent("STU001", new Grade("STU001", new ElectiveSubject("Music", "MUS101"), 73.0));
             
-            addGradeToStudent("STU002", new Grade("STU002", new CoreSubject("Mathematics", "MATH101"), 88.0));
+            addGradeToStudent("STU002", new Grade("STU002", new CoreSubject("Mathematics", "MAT101"), 88.0));
             addGradeToStudent("STU002", new Grade("STU002", new CoreSubject("English", "ENG101"), 92.0));
             addGradeToStudent("STU002", new Grade("STU002", new CoreSubject("Science", "SCI101"), 90.0));
             addGradeToStudent("STU002", new Grade("STU002", new ElectiveSubject("Music", "MUS101"), 82.0));
-            addGradeToStudent("STU002", new Grade("STU002", new ElectiveSubject("Physical Education", "PE101"), 75.0));
+            addGradeToStudent("STU002", new Grade("STU002", new ElectiveSubject("Physical Education", "PHY101"), 75.0));
             addGradeToStudent("STU002", new Grade("STU002", new ElectiveSubject("Art", "ART101"), 84.0));
             
-            addGradeToStudent("STU003", new Grade("STU003", new CoreSubject("Mathematics", "MATH101"), 45.0));
+            addGradeToStudent("STU003", new Grade("STU003", new CoreSubject("Mathematics", "MAT101"), 45.0));
             addGradeToStudent("STU003", new Grade("STU003", new CoreSubject("English", "ENG101"), 48.0));
             addGradeToStudent("STU003", new Grade("STU003", new CoreSubject("Science", "SCI101"), 42.0));
             addGradeToStudent("STU003", new Grade("STU003", new ElectiveSubject("Art", "ART101"), 47.0));
             
-            addGradeToStudent("STU004", new Grade("STU004", new CoreSubject("Mathematics", "MATH101"), 95.0));
+            addGradeToStudent("STU004", new Grade("STU004", new CoreSubject("Mathematics", "MAT101"), 95.0));
             addGradeToStudent("STU004", new Grade("STU004", new CoreSubject("English", "ENG101"), 93.0));
             addGradeToStudent("STU004", new Grade("STU004", new CoreSubject("Science", "SCI101"), 94.0));
             addGradeToStudent("STU004", new Grade("STU004", new ElectiveSubject("Music", "MUS101"), 91.0));
-            addGradeToStudent("STU004", new Grade("STU004", new ElectiveSubject("Physical Education", "PE101"), 88.0));
+            addGradeToStudent("STU004", new Grade("STU004", new ElectiveSubject("Physical Education", "PHY101"), 88.0));
             addGradeToStudent("STU004", new Grade("STU004", new ElectiveSubject("Art", "ART101"), 96.0));
             
-            addGradeToStudent("STU005", new Grade("STU005", new CoreSubject("Mathematics", "MATH101"), 65.0));
+            addGradeToStudent("STU005", new Grade("STU005", new CoreSubject("Mathematics", "MAT101"), 65.0));
             addGradeToStudent("STU005", new Grade("STU005", new CoreSubject("English", "ENG101"), 70.0));
             addGradeToStudent("STU005", new Grade("STU005", new CoreSubject("Science", "SCI101"), 68.0));
             addGradeToStudent("STU005", new Grade("STU005", new ElectiveSubject("Art", "ART101"), 72.0));
             addGradeToStudent("STU005", new Grade("STU005", new ElectiveSubject("Music", "MUS101"), 60.0));
 
-            addGradeToStudent("STU006", new Grade("STU006", new CoreSubject("Mathematics", "MATH101"), 95.0));
+            addGradeToStudent("STU006", new Grade("STU006", new CoreSubject("Mathematics", "MAT101"), 95.0));
             addGradeToStudent("STU006", new Grade("STU006", new CoreSubject("English", "ENG101"), 93.0));
             addGradeToStudent("STU006", new Grade("STU006", new CoreSubject("Science", "SCI101"), 94.0));
             addGradeToStudent("STU006", new Grade("STU006", new ElectiveSubject("Music", "MUS101"), 91.0));
             addGradeToStudent("STU006", new Grade("STU006", new ElectiveSubject("Art", "ART101"), 96.0));
 
-            addGradeToStudent("STU007", new Grade("STU007", new CoreSubject("Mathematics", "MATH101"), 88.0));
+            addGradeToStudent("STU007", new Grade("STU007", new CoreSubject("Mathematics", "MAT101"), 88.0));
             addGradeToStudent("STU007", new Grade("STU007", new CoreSubject("English", "ENG101"), 85.0));
             addGradeToStudent("STU007", new Grade("STU007", new CoreSubject("Science", "SCI101"), 87.0));
             addGradeToStudent("STU007", new Grade("STU007", new ElectiveSubject("Art", "ART101"), 86.0));
 
-            addGradeToStudent("STU008", new Grade("STU008", new CoreSubject("Mathematics", "MATH101"), 93.0));
+            addGradeToStudent("STU008", new Grade("STU008", new CoreSubject("Mathematics", "MAT101"), 93.0));
             addGradeToStudent("STU008", new Grade("STU008", new CoreSubject("English", "ENG101"), 90.0));
             addGradeToStudent("STU008", new Grade("STU008", new CoreSubject("Science", "SCI101"), 92.0));
             addGradeToStudent("STU008", new Grade("STU008", new ElectiveSubject("Music", "MUS101"), 89.0));
             addGradeToStudent("STU008", new Grade("STU008", new ElectiveSubject("Art", "ART101"), 92.0));
 
-            addGradeToStudent("STU009", new Grade("STU009", new CoreSubject("Mathematics", "MATH101"), 75.0));
+            addGradeToStudent("STU009", new Grade("STU009", new CoreSubject("Mathematics", "MAT101"), 75.0));
             addGradeToStudent("STU009", new Grade("STU009", new CoreSubject("English", "ENG101"), 72.0));
             addGradeToStudent("STU009", new Grade("STU009", new CoreSubject("Science", "SCI101"), 74.0));
             addGradeToStudent("STU009", new Grade("STU009", new ElectiveSubject("Art", "ART101"), 73.0));
 
-            addGradeToStudent("STU010", new Grade("STU010", new CoreSubject("Mathematics", "MATH101"), 90.0));
+            addGradeToStudent("STU010", new Grade("STU010", new CoreSubject("Mathematics", "MAT101"), 90.0));
             addGradeToStudent("STU010", new Grade("STU010", new CoreSubject("English", "ENG101"), 88.0));
             addGradeToStudent("STU010", new Grade("STU010", new CoreSubject("Science", "SCI101"), 89.0));
             addGradeToStudent("STU010", new Grade("STU010", new ElectiveSubject("Music", "MUS101"), 89.0));
 
-            addGradeToStudent("STU011", new Grade("STU011", new CoreSubject("Mathematics", "MATH101"), 80.0));
+            addGradeToStudent("STU011", new Grade("STU011", new CoreSubject("Mathematics", "MAT101"), 80.0));
             addGradeToStudent("STU011", new Grade("STU011", new CoreSubject("English", "ENG101"), 84.0));
             addGradeToStudent("STU011", new Grade("STU011", new CoreSubject("Science", "SCI101"), 82.0));
 
-            addGradeToStudent("STU012", new Grade("STU012", new CoreSubject("Mathematics", "MATH101"), 88.0));
+            addGradeToStudent("STU012", new Grade("STU012", new CoreSubject("Mathematics", "MAT101"), 88.0));
             addGradeToStudent("STU012", new Grade("STU012", new CoreSubject("English", "ENG101"), 87.0));
             addGradeToStudent("STU012", new Grade("STU012", new CoreSubject("Science", "SCI101"), 87.0));
             addGradeToStudent("STU012", new Grade("STU012", new ElectiveSubject("Music", "MUS101"), 88.0));
 
         } catch (Exception e) {
-            System.err.println("Error initializing sample data: " + e.getMessage());
+            System.out.println("Error initializing sample data: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -340,7 +341,11 @@ public class EnhancedStudentManager implements Searchable {
         System.out.println("________________________________________________________________________________");
         System.out.println();
 
-        for (Student student : students.values()) {
+        // Sort students by ID for consistent display
+        List<Student> sortedStudents = new ArrayList<>(students.values());
+        sortedStudents.sort((s1, s2) -> s1.getStudentId().compareTo(s2.getStudentId()));
+
+        for (Student student : sortedStudents) {
             String status = student.isPassing() ? "Passing" : "Failing";
             String honorsInfo = "";
 
@@ -386,6 +391,11 @@ public class EnhancedStudentManager implements Searchable {
     // Returns collection of students for iteration
     public Collection<Student> getStudents() {
         return students.values();
+    }
+
+    // O(n) - creates list from HashMap values
+    public List<Student> getAllStudents() {
+        return new ArrayList<>(students.values());
     }
 
     // O(n) - creates list from HashMap keys
