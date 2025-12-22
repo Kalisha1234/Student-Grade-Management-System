@@ -1,6 +1,9 @@
 package org.example.models;
 
-public abstract class Subject {
+import java.io.Serializable;
+
+public abstract class Subject implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String subjectName;
     private String subjectCode;
 

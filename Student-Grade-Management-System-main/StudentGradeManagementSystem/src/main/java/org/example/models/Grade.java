@@ -2,10 +2,12 @@ package org.example.models;
 
 import org.example.interfaces.Gradable;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Grade implements Gradable {
+public class Grade implements Gradable, Serializable {
+    private static final long serialVersionUID = 1L;
     private final String gradeId;
     private final String studentId;
     private final Subject subject;
