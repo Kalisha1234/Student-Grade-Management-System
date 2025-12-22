@@ -7,6 +7,10 @@ public class InvalidFileFormatException extends Exception {
         super("Invalid file format for '" + filename + "': " + message);
         this.filename = filename;
     }
+    
+    public InvalidFileFormatException(String message) {
+        super(message);
+    }
 
     public String getFilename() {
         return filename;

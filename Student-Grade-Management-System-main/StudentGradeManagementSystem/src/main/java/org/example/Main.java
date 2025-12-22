@@ -5,6 +5,7 @@ import org.example.models.*;
 import org.example.service.*;
 
 import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -15,6 +16,7 @@ public class Main {
     private static CSVParser csvParser;
     private static GPACalculator gpaCalculator;
     private static ReportGenerator reportGenerator;
+    private static EnhancedFileOperations enhancedFileOps;
     private static Scanner scanner;
 
     // Validation patterns
@@ -35,6 +37,15 @@ public class Main {
         fileExporter = new FileExporter(reportGenerator, gpaCalculator);
         fileExporter.setStudentManager(studentManager);
         bulkImportService = new BulkImportService(studentManager, csvParser, fileExporter);
+        
+        try {
+            enhancedFileOps = new EnhancedFileOperations();
+            enhancedFileOps.setStudentManager(studentManager);
+            enhancedFileOps.startFileWatcher();
+        } catch (IOException e) {
+            System.err.println("Warning: Enhanced file operations not available: " + e.getMessage());
+        }
+        
         scanner = new Scanner(System.in);
     }
 
@@ -47,12 +58,14 @@ public class Main {
             System.out.println("2. View Students");
             System.out.println("3. Record Grade");
             System.out.println("4. View Grade Report");
-            System.out.println("5. Export Grade Report");
-            System.out.println("6. Calculate Student GPA");
+            System.out.println("5. Export Grade Report (CSV/JSON/Binary)");
+            System.out.println("6. Import Data (Multi-format support)");
             System.out.println("7. Bulk Import Grades");
-            System.out.println("8. View Class Statistics");
-            System.out.println("9. Search Students");
-            System.out.println("10. Exit");
+            System.out.println("8. Calculate Student GPA");
+            System.out.println("9. View Class Statistics");
+            System.out.println("10. Search Students");
+            System.out.println("11. File Operations");
+            System.out.println("12. Exit");
             System.out.print("\nEnter choice: ");
 
             try {
@@ -63,13 +76,15 @@ public class Main {
                     case 2: viewStudents(); break;
                     case 3: recordGrade(); break;
                     case 4: viewGradeReport(); break;
-                    case 5: exportGradeReport(); break;
-                    case 6: calculateGPA(); break;
+                    case 5: enhancedExportGradeReport(); break;
+                    case 6: enhancedImportData(); break;
                     case 7: bulkImportGrades(); break;
-                    case 8: viewClassStatistics(); break;
-                    case 9: searchStudents(); break;
-                    case 10: exitApplication(); return;
-                    default: System.out.println("Invalid choice! Please enter 1-10.");
+                    case 8: calculateGPA(); break;
+                    case 9: viewClassStatistics(); break;
+                    case 10: searchStudents(); break;
+                    case 11: fileOperationsMenu(); break;
+                    case 12: exitApplication(); return;
+                    default: System.out.println("Invalid choice! Please enter 1-12.");
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
@@ -562,9 +577,210 @@ public class Main {
         }
     }
 
+    private static void enhancedExportGradeReport() {
+        if (enhancedFileOps == null) {
+            System.out.println("Enhanced file operations not available. Using standard export...");
+            exportGradeReport();
+            return;
+        }
+        
+        System.out.println("\nENHANCED EXPORT GRADE REPORT");
+        System.out.println();
+
+        System.out.print("Enter Student ID: ");
+        String studentId = scanner.nextLine();
+
+        try {
+            Student student = studentManager.searchById(studentId);
+            System.out.println("Student: " + student.getName() + " (" + student.getGrades().size() + " grades)");
+
+            System.out.println("\nExport formats:");
+            System.out.println("1. CSV (Excel compatible)");
+            System.out.println("2. JSON (Web/API format)");
+            System.out.println("3. Binary (Java serialized)");
+            System.out.println("4. All formats");
+            System.out.println("5. Format comparison");
+            System.out.print("\nSelect option (1-5): ");
+
+            int option = getIntInput();
+            System.out.print("Enter filename (without extension): ");
+            String filename = scanner.nextLine();
+
+            switch (option) {
+                case 1:
+                    enhancedFileOps.exportGradeReportWithOutput(studentId, filename, "CSV");
+                    break;
+                case 2:
+                    enhancedFileOps.exportGradeReportWithOutput(studentId, filename, "JSON");
+                    break;
+                case 3:
+                    enhancedFileOps.exportGradeReportWithOutput(studentId, filename, "BINARY");
+                    break;
+                case 4:
+                    System.out.println("\nProcessing with NIO.2 Streaming...\n");
+                    enhancedFileOps.exportGradeReportWithOutput(studentId, filename, "CSV");
+                    enhancedFileOps.exportGradeReportWithOutput(studentId, filename, "JSON");
+                    enhancedFileOps.exportGradeReportWithOutput(studentId, filename, "BINARY");
+                    break;
+                case 5:
+                    enhancedFileOps.displayFormatComparison(studentId);
+                    break;
+                default:
+                    System.out.println("Invalid option!");
+                    return;
+            }
+
+        } catch (Exception e) {
+            System.out.println("\n✗ Error: " + e.getMessage());
+        }
+    }
+
+    private static void enhancedImportData() {
+        if (enhancedFileOps == null) {
+            System.out.println("Enhanced file operations not available.");
+            return;
+        }
+        
+        System.out.println("\nENHANCED IMPORT DATA");
+        System.out.println();
+        System.out.println("Supported formats: CSV, JSON, Binary");
+        System.out.println("File locations:");
+        System.out.println("  CSV files: ./data/csv/");
+        System.out.println("  JSON files: ./data/json/");
+        System.out.println("  Binary files: ./data/binary/");
+
+        System.out.println("\nImport formats:");
+        System.out.println("1. CSV (Comma-separated values)");
+        System.out.println("2. JSON (JavaScript Object Notation)");
+        System.out.println("3. Binary (Java serialized objects)");
+        System.out.print("\nSelect format (1-3): ");
+
+        int formatChoice = getIntInput();
+        System.out.print("Enter filename (with extension): ");
+        String filename = scanner.nextLine();
+
+        String format;
+        switch (formatChoice) {
+            case 1: format = "CSV"; break;
+            case 2: format = "JSON"; break;
+            case 3: format = "BINARY"; break;
+            default:
+                System.out.println("Invalid format choice!");
+                return;
+        }
+
+        try {
+            enhancedFileOps.importData(filename, format);
+            System.out.println("\n✓ Import completed successfully!");
+        } catch (Exception e) {
+            System.out.println("\n✗ Import failed: " + e.getMessage());
+        }
+    }
+
+    private static void fileOperationsMenu() {
+        if (enhancedFileOps == null) {
+            System.out.println("Enhanced file operations not available.");
+            return;
+        }
+        
+        System.out.println("\nFILE OPERATIONS");
+        System.out.println();
+        System.out.println("1. Bulk Import Grades (Streaming)");
+        System.out.println("2. Format Comparison");
+        System.out.println("3. Directory Status");
+        System.out.println("4. Return to main menu");
+        System.out.print("\nSelect option (1-4): ");
+
+        int choice = getIntInput();
+
+        switch (choice) {
+            case 1:
+                bulkImportWithStreaming();
+                break;
+            case 2:
+                formatComparison();
+                break;
+            case 3:
+                displayDirectoryStatus();
+                break;
+            case 4:
+                return;
+            default:
+                System.out.println("Invalid choice!");
+        }
+    }
+
+    private static void bulkImportWithStreaming() {
+        System.out.println("\nBULK IMPORT WITH STREAMING");
+        System.out.println("Place CSV file in: ./data/csv/");
+        System.out.print("Enter CSV filename: ");
+        String filename = scanner.nextLine();
+
+        try {
+            System.out.println("\nProcessing with streaming (memory efficient)...");
+            enhancedFileOps.bulkImportGrades(filename)
+                .thenAccept(count -> {
+                    System.out.println("\n✓ Bulk import completed!");
+                    System.out.println("Records processed: " + count);
+                })
+                .exceptionally(throwable -> {
+                    System.out.println("\n✗ Bulk import failed: " + throwable.getMessage());
+                    return null;
+                });
+        } catch (Exception e) {
+            System.out.println("\n✗ Error: " + e.getMessage());
+        }
+    }
+
+    private static void formatComparison() {
+        System.out.print("Enter Student ID for format comparison: ");
+        String studentId = scanner.nextLine();
+
+        try {
+            enhancedFileOps.displayFormatComparison(studentId);
+        } catch (Exception e) {
+            System.out.println("\n✗ Error: " + e.getMessage());
+        }
+    }
+
+    private static void displayDirectoryStatus() {
+        System.out.println("\n=== DIRECTORY STATUS ===");
+        
+        try {
+            Path csvDir = Paths.get("./data/csv/");
+            Path jsonDir = Paths.get("./data/json/");
+            Path binaryDir = Paths.get("./data/binary/");
+            
+            displayDirInfo("CSV", csvDir);
+            displayDirInfo("JSON", jsonDir);
+            displayDirInfo("Binary", binaryDir);
+            
+        } catch (Exception e) {
+            System.out.println("Error reading directories: " + e.getMessage());
+        }
+    }
+    
+    private static void displayDirInfo(String type, Path dir) throws IOException {
+        if (Files.exists(dir)) {
+            long fileCount = Files.list(dir).count();
+            System.out.printf("%-8s: %d files in %s\n", type, fileCount, dir);
+        } else {
+            System.out.printf("%-8s: Directory not found\n", type);
+        }
+    }
+
     private static void exitApplication() {
         System.out.println("\nThank you for using Enhanced Student Grade Management System!");
         System.out.println("Goodbye!");
+        
+        if (enhancedFileOps != null) {
+            try {
+                enhancedFileOps.close();
+            } catch (IOException e) {
+                System.err.println("Warning: Error closing file operations: " + e.getMessage());
+            }
+        }
+        
         scanner.close();
     }
 
