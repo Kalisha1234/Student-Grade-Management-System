@@ -13,6 +13,8 @@ import java.util.*;
 public class EnhancedStudentManager implements Searchable {
     // HashMap for O(1) student lookup by ID
     private HashMap<String, Student> students;
+    // TreeMap for O(log n) sorted GPA rankings (descending order)
+    private TreeMap<Double, List<Student>> gpaRankings;
 
     private StatisticsCalculator statisticsCalculator;
     private GPACalculator gpaCalculator;
@@ -20,6 +22,7 @@ public class EnhancedStudentManager implements Searchable {
 
     public EnhancedStudentManager() {
         students = new HashMap<>();
+        gpaRankings = new TreeMap<>(Collections.reverseOrder());
         statisticsCalculator = new StatisticsCalculator();
         gpaCalculator = new GPACalculator();
         reportGenerator = new ReportGenerator();
@@ -160,18 +163,18 @@ public class EnhancedStudentManager implements Searchable {
         }
     }
 
-    // O(n log n) due to sorting
+    // O(n) - uses pre-sorted TreeMap for ranking
     private int calculateClassRank(Student targetStudent) {
-        List<Student> sortedStudents = new ArrayList<>(students.values());
-        sortedStudents.sort((s1, s2) ->
-                Double.compare(s2.calculateAverageGrade(), s1.calculateAverageGrade()));
-
-        for (int i = 0; i < sortedStudents.size(); i++) {
-            if (sortedStudents.get(i).getStudentId().equals(targetStudent.getStudentId())) {
-                return i + 1;
+        int rank = 1;
+        for (Map.Entry<Double, List<Student>> entry : gpaRankings.entrySet()) {
+            for (Student student : entry.getValue()) {
+                if (student.getStudentId().equals(targetStudent.getStudentId())) {
+                    return rank;
+                }
+                rank++;
             }
         }
-        return sortedStudents.size();
+        return rank;
     }
 
     // O(n*m) where n is students and m is grades per student
@@ -296,14 +299,35 @@ public class EnhancedStudentManager implements Searchable {
         }
     }
 
-    // O(1) insertion using HashMap.put()
+    // O(1) HashMap insertion + O(log n) TreeMap insertion
     public void addStudent(Student student) {
         students.put(student.getStudentId(), student);
+        updateGPARankings(student);
+    }
+
+    // O(log n) - updates TreeMap with student's GPA
+    private void updateGPARankings(Student student) {
+        double gpa = student.calculateAverageGrade();
+        gpaRankings.computeIfAbsent(gpa, k -> new ArrayList<>()).add(student);
     }
 
     public void addGradeToStudent(String studentId, Grade grade) throws StudentNotFoundException {
         Student student = searchById(studentId);
+        removeFromGPARankings(student);
         student.addGrade(grade);
+        updateGPARankings(student);
+    }
+
+    // O(n) - removes student from old GPA ranking
+    private void removeFromGPARankings(Student student) {
+        double oldGpa = student.calculateAverageGrade();
+        List<Student> studentsAtGpa = gpaRankings.get(oldGpa);
+        if (studentsAtGpa != null) {
+            studentsAtGpa.remove(student);
+            if (studentsAtGpa.isEmpty()) {
+                gpaRankings.remove(oldGpa);
+            }
+        }
     }
 
     // O(n) iteration through HashMap values
@@ -366,6 +390,11 @@ public class EnhancedStudentManager implements Searchable {
     // O(n) - creates list from HashMap keys
     public List<String> getAllStudentIds() {
         return new ArrayList<>(students.keySet());
+    }
+
+    // O(1) - returns sorted GPA rankings
+    public TreeMap<Double, List<Student>> getGPARankings() {
+        return gpaRankings;
     }
 }
 
