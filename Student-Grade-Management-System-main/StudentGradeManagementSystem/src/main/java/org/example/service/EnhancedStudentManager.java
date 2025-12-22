@@ -4,6 +4,7 @@ package org.example.service;
 import org.example.exceptions.StudentNotFoundException;
 import org.example.interfaces.Searchable;
 import org.example.models.*;
+import org.example.utils.ValidationUtils;
 
 import java.util.*;
 
@@ -35,6 +36,7 @@ public class EnhancedStudentManager implements Searchable {
     // O(1) lookup using HashMap.get()
     @Override
     public Student searchById(String studentId) throws StudentNotFoundException {
+        ValidationUtils.validateStudentId(studentId);
         Student student = students.get(studentId);
         if (student == null) {
             throw new StudentNotFoundException(studentId);
@@ -61,6 +63,9 @@ public class EnhancedStudentManager implements Searchable {
     // O(n) iteration through HashMap values + O(n log n) sorting
     @Override
     public List<Student> searchByGradeRange(double min, double max) {
+        ValidationUtils.validateGrade(min);
+        ValidationUtils.validateGrade(max);
+        
         List<Student> results = new ArrayList<>();
 
         for (Student student : students.values()) {
@@ -69,7 +74,6 @@ public class EnhancedStudentManager implements Searchable {
                 results.add(student);
             }
         }
-        // Sort by GPA descending using custom comparator
         results.sort(StudentComparator.byGPADescending());
         return results;
     }
@@ -210,7 +214,7 @@ public class EnhancedStudentManager implements Searchable {
         addStudent(new RegularStudent("Nece Kalisha", 18, "necekalisha@school.edu", "+1-203-1071"));
         addStudent(new HonorsStudent("Bright Tank", 16, "brighttank@school.edu", "+1-550-1122"));
         addStudent(new RegularStudent("Nece Alisha", 19, "necealisha@school.edu", "+1-567-1233"));
-        addStudent(new HonorsStudent(" Brooke Melendez", 17, "brookemelendez@school.edu", "+1-324-1434"));
+        addStudent(new HonorsStudent("Brooke Melendez", 17, "brookemelendez@school.edu", "+1-324-1434"));
         addStudent(new RegularStudent("Beauty Bri", 18, "beautybri@school.edu", "+1-666-6666"));
         addStudent(new HonorsStudent("Banny Banv", 19, "bannybanv@school.edu", "+1-555-1009"));
 
