@@ -1,5 +1,7 @@
 package org.example.models;
 
+import org.example.utils.ValidationUtils;
+
 import java.io.Serializable;
 
 public abstract class Subject implements Serializable {
@@ -8,6 +10,7 @@ public abstract class Subject implements Serializable {
     private String subjectCode;
 
     public Subject(String subjectName, String subjectCode) {
+        ValidationUtils.validateCourseCode(subjectCode);
         this.subjectName = subjectName;
         this.subjectCode = subjectCode;
     }

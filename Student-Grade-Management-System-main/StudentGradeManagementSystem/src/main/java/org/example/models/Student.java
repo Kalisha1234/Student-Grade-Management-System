@@ -1,5 +1,7 @@
 package org.example.models;
 
+import org.example.utils.ValidationUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -18,6 +20,10 @@ public abstract class Student implements Serializable {
     private LinkedList<Grade> grades;
 
     public Student(String name, int age, String email, String phone) {
+        ValidationUtils.validateName(name);
+        ValidationUtils.validateEmail(email);
+        ValidationUtils.validatePhone(phone);
+        
         this.studentId = "STU" + String.format("%03d", studentCounter++);
         this.name = name;
         this.age = age;
@@ -61,6 +67,7 @@ public abstract class Student implements Serializable {
 
     // O(1) - adds to end of LinkedList
     public void addGrade(Grade grade) {
+        ValidationUtils.validateGrade(grade.getGrade());
         grades.add(grade);
     }
 
