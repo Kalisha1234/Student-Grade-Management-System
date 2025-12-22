@@ -1,6 +1,7 @@
 package org.example.models;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Student {
@@ -11,9 +12,9 @@ public abstract class Student {
     private String phone;
     private String status;
     private static int studentCounter = 1;
-    //private List<Grade> grades;
-   //privateList<Grade> grades = new ArrayList<>(); // List to hold grade// s
-    List<Grade> grades = new ArrayList<>();
+    // LinkedList for O(1) insertions at head/tail - efficient for grade history
+    private LinkedList<Grade> grades;
+
     public Student(String name, int age, String email, String phone) {
         this.studentId = "STU" + String.format("%03d", studentCounter++);
         this.name = name;
@@ -21,7 +22,7 @@ public abstract class Student {
         this.email = email;
         this.phone = phone;
         this.status = "Active";
-        this.grades = new ArrayList<>(); // Initialize the list
+        this.grades = new LinkedList<>();
     }
 
     // Getters and setters
@@ -41,6 +42,7 @@ public abstract class Student {
     public abstract double getPassingGrade();
 
     // Concrete methods
+    // O(n) - iterates through LinkedList
     public double calculateAverageGrade() {
         if (grades.isEmpty()) return 0.0;
 
@@ -55,7 +57,7 @@ public abstract class Student {
         return calculateAverageGrade() >= getPassingGrade();
     }
 
-    // Add this method to add grades
+    // O(1) - adds to end of LinkedList
     public void addGrade(Grade grade) {
         grades.add(grade);
     }
