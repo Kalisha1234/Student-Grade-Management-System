@@ -3,6 +3,7 @@ package org.example;
 import org.example.exceptions.StudentNotFoundException;
 import org.example.models.*;
 import org.example.service.*;
+import org.example.utils.ValidationUtils;
 
 import java.io.*;
 import java.nio.file.*;
@@ -88,7 +89,6 @@ public class Main {
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
-                e.printStackTrace();
             }
 
             System.out.print("\nPress Enter to continue...");
@@ -105,9 +105,10 @@ public class Main {
         while (true) {
             System.out.print("Enter student name: ");
             name = scanner.nextLine().trim();
-            if (isValidName(name)) {
+            try {
+                ValidationUtils.validateName(name);
                 break;
-            } else {
+            } catch (IllegalArgumentException e) {
                 System.out.println("Invalid name! Name should contain only letters and spaces.");
             }
         }
@@ -129,9 +130,10 @@ public class Main {
         while (true) {
             System.out.print("Enter student email: ");
             email = scanner.nextLine().trim();
-            if (isValidEmail(email)) {
+            try {
+                ValidationUtils.validateEmail(email);
                 break;
-            } else {
+            } catch (IllegalArgumentException e) {
                 System.out.println("Invalid email! Email must contain @ symbol and valid domain.");
             }
         }
@@ -141,9 +143,10 @@ public class Main {
         while (true) {
             System.out.print("Enter student phone: ");
             phone = scanner.nextLine().trim();
-            if (isValidPhone(phone)) {
+            try {
+                ValidationUtils.validatePhone(phone);
                 break;
-            } else {
+            } catch (IllegalArgumentException e) {
                 System.out.println("Invalid phone number! Use format like +1-555-1234 or (555) 123-4567.");
             }
         }
@@ -156,12 +159,17 @@ public class Main {
         int typeChoice = getIntInput();
 
         Student student;
-        if (typeChoice == 1) {
-            student = new RegularStudent(name, age, email, phone);
-        } else if (typeChoice == 2) {
-            student = new HonorsStudent(name, age, email, phone);
-        } else {
-            System.out.println("Invalid choice! Student not added.");
+        try {
+            if (typeChoice == 1) {
+                student = new RegularStudent(name, age, email, phone);
+            } else if (typeChoice == 2) {
+                student = new HonorsStudent(name, age, email, phone);
+            } else {
+                System.out.println("Invalid choice! Student not added.");
+                return;
+            }
+        } catch (Exception e) {
+            System.out.println("Error creating student: " + e.getMessage());
             return;
         }
 
@@ -286,7 +294,6 @@ public class Main {
             }
         } catch (Exception e) {
             System.out.println("\n✗ Error: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -412,7 +419,6 @@ public class Main {
             System.out.println("\n✗ Error: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("\n✗ Error exporting file: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
