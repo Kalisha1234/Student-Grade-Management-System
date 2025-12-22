@@ -11,65 +11,67 @@ import org.example.models.Student;
 import java.util.*;
 
 public class EnhancedStudentManager implements Searchable {
-    private Student[] students;
-    private int studentCount;
-    private static final int MAX_STUDENTS = 50;
+    // HashMap for O(1) student lookup by ID
+    private HashMap<String, Student> students;
 
     private StatisticsCalculator statisticsCalculator;
     private GPACalculator gpaCalculator;
     private ReportGenerator reportGenerator;
 
     public EnhancedStudentManager() {
-        students = new Student[MAX_STUDENTS];
-        studentCount = 0;
+        students = new HashMap<>();
         statisticsCalculator = new StatisticsCalculator();
         gpaCalculator = new GPACalculator();
         reportGenerator = new ReportGenerator();
         initializeSampleData();
     }
 
+    // O(1) lookup using HashMap.get()
     @Override
     public Student searchById(String studentId) throws StudentNotFoundException {
-        Student student = findStudent(studentId);
+        Student student = students.get(studentId);
         if (student == null) {
             throw new StudentNotFoundException(studentId);
         }
         return student;
     }
 
+    // O(n) iteration through HashMap values
     @Override
     public List<Student> searchByName(String name) {
         List<Student> results = new ArrayList<>();
         String searchTerm = name.toLowerCase();
 
-        for (int i = 0; i < studentCount; i++) {
-            if (students[i].getName().toLowerCase().contains(searchTerm)) {
-                results.add(students[i]);
+        for (Student student : students.values()) {
+            if (student.getName().toLowerCase().contains(searchTerm)) {
+                results.add(student);
             }
         }
         return results;
     }
 
+    // O(n) iteration through HashMap values
     @Override
     public List<Student> searchByGradeRange(double min, double max) {
         List<Student> results = new ArrayList<>();
 
-        for (int i = 0; i < studentCount; i++) {
-            double average = students[i].calculateAverageGrade();
+        for (Student student : students.values()) {
+            double average = student.calculateAverageGrade();
             if (average >= min && average <= max) {
-                results.add(students[i]);
+                results.add(student);
             }
         }
         return results;
     }
 
+    // O(n) iteration through HashMap values
     @Override
     public List<Student> searchByType(String studentType) {
         List<Student> results = new ArrayList<>();
 
-        for (int i = 0; i < studentCount; i++) {
-            if (students[i].getStudentType().equalsIgnoreCase(studentType)) {
-                results.add(students[i]);
+        for (Student student : students.values()) {
+            if (student.getStudentType().equalsIgnoreCase(studentType)) {
+                results.add(student);
             }
         }
         return results;
@@ -84,7 +86,7 @@ public class EnhancedStudentManager implements Searchable {
         }
 
         System.out.println("\n=== CLASS STATISTICS ===\n");
-        System.out.println("Total Students: " + studentCount);
+        System.out.println("Total Students: " + students.size());
         System.out.println("Total Grades Recorded: " + allGrades.size());
 
         System.out.println("\nGRADE DISTRIBUTION:");
@@ -143,7 +145,7 @@ public class EnhancedStudentManager implements Searchable {
 
         // Calculate class rank
         int rank = calculateClassRank(student);
-        System.out.println("Class Rank: " + rank + " of " + studentCount);
+        System.out.println("Class Rank: " + rank + " of " + students.size());
 
         System.out.println("\nPerformance Analysis:");
         if (cumulativeGPA >= 3.5) {
@@ -158,17 +160,12 @@ public class EnhancedStudentManager implements Searchable {
         }
     }
 
+    // O(n log n) due to sorting
     private int calculateClassRank(Student targetStudent) {
-        // Sort students by average grade descending
-        List<Student> sortedStudents = new ArrayList<>();
-        for (int i = 0; i < studentCount; i++) {
-            sortedStudents.add(students[i]);
-        }
-
+        List<Student> sortedStudents = new ArrayList<>(students.values());
         sortedStudents.sort((s1, s2) ->
                 Double.compare(s2.calculateAverageGrade(), s1.calculateAverageGrade()));
 
-        // Find rank
         for (int i = 0; i < sortedStudents.size(); i++) {
             if (sortedStudents.get(i).getStudentId().equals(targetStudent.getStudentId())) {
                 return i + 1;
@@ -177,23 +174,20 @@ public class EnhancedStudentManager implements Searchable {
         return sortedStudents.size();
     }
 
+    // O(n*m) where n is students and m is grades per student
     private List<Double> getAllGrades() {
         List<Double> allGrades = new ArrayList<>();
-        for (int i = 0; i < studentCount; i++) {
-            for (Grade grade : students[i].getGrades()) {
+        for (Student student : students.values()) {
+            for (Grade grade : student.getGrades()) {
                 allGrades.add(grade.getGrade());
             }
         }
         return allGrades;
     }
 
+    // O(1) lookup using HashMap.get()
     public Student findStudent(String studentId) {
-        for (int i = 0; i < studentCount; i++) {
-            if (students[i].getStudentId().equals(studentId)) {
-                return students[i];
-            }
-        }
-        return null;
+        return students.get(studentId);
     }
 
     private void initializeSampleData() {
@@ -302,10 +296,9 @@ public class EnhancedStudentManager implements Searchable {
         }
     }
 
+    // O(1) insertion using HashMap.put()
     public void addStudent(Student student) {
-        if (studentCount < MAX_STUDENTS) {
-            students[studentCount++] = student;
-        }
+        students.put(student.getStudentId(), student);
     }
 
     public void addGradeToStudent(String studentId, Grade grade) throws StudentNotFoundException {
@@ -313,6 +306,7 @@ public class EnhancedStudentManager implements Searchable {
         student.addGrade(grade);
     }
 
+    // O(n) iteration through HashMap values
     public void viewAllStudents() {
         System.out.println("\nSTUDENT LISTING");
         System.out.println("________________________________________________________________________________");
@@ -321,8 +315,7 @@ public class EnhancedStudentManager implements Searchable {
         System.out.println("________________________________________________________________________________");
         System.out.println();
 
-        for (int i = 0; i < studentCount; i++) {
-            Student student = students[i];
+        for (Student student : students.values()) {
             String status = student.isPassing() ? "Passing" : "Failing";
             String honorsInfo = "";
 
@@ -346,34 +339,33 @@ public class EnhancedStudentManager implements Searchable {
             System.out.println();
         }
 
-        System.out.println("Total Students: " + studentCount);
+        System.out.println("Total Students: " + students.size());
         System.out.printf("Average Class Grade: %.1f%%\n", getAverageClassGrade());
     }
 
+    // O(n) iteration through HashMap values
     public double getAverageClassGrade() {
-        if (studentCount == 0) return 0.0;
+        if (students.isEmpty()) return 0.0;
 
         double sum = 0;
-        for (int i = 0; i < studentCount; i++) {
-            sum += students[i].calculateAverageGrade();
+        for (Student student : students.values()) {
+            sum += student.calculateAverageGrade();
         }
-        return sum / studentCount;
+        return sum / students.size();
     }
 
     public int getStudentCount() {
-        return studentCount;
+        return students.size();
     }
 
-    public Student[] getStudents() {
-        return students;
+    // Returns collection of students for iteration
+    public Collection<Student> getStudents() {
+        return students.values();
     }
 
+    // O(n) - creates list from HashMap keys
     public List<String> getAllStudentIds() {
-        List<String> ids = new ArrayList<>();
-        for (int i = 0; i < studentCount; i++) {
-            ids.add(students[i].getStudentId());
-        }
-        return ids;
+        return new ArrayList<>(students.keySet());
     }
 }
 
