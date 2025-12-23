@@ -206,17 +206,25 @@ public class EnhancedStudentManager implements Searchable {
 
     private void initializeSampleData() {
         addStudent(new RegularStudent("Alice Johnson", 16, "alice.johnson@school.edu", "+1-555-1001"));
-        addStudent(new HonorsStudent("Bob Smith", 17, "bob.smith@school.edu", "+1-555-1002"));
-        addStudent(new RegularStudent("Carol Martinez", 16, "carol.martinez@school.edu", "+1-555-1003"));
+        addStudent(new HonorsStudent("Bob Smith", 17, "bob.smith@university.edu", "+1-555-1002"));
+        addStudent(new RegularStudent("Carol Martinez", 16, "carol.martinez@college.edu", "+1-555-1003"));
         addStudent(new HonorsStudent("David Chen", 17, "david.chen@school.edu", "+1-555-1004"));
-        addStudent(new RegularStudent("Emma Wilson", 16, "emma.wilson@school.edu", "+1-555-1005"));
-        addStudent(new HonorsStudent("Banks Mill", 19, "banksmill@school.edu", "+1-555-1223"));
+        addStudent(new RegularStudent("Emma Wilson", 16, "emma.wilson@academy.edu", "+1-555-1005"));
+        addStudent(new HonorsStudent("Banks Mill", 19, "banksmill@university.edu", "+1-555-1223"));
         addStudent(new RegularStudent("Nece Kalisha", 18, "necekalisha@school.edu", "+1-203-1071"));
-        addStudent(new HonorsStudent("Bright Tank", 16, "brighttank@school.edu", "+1-550-1122"));
-        addStudent(new RegularStudent("Nece Alisha", 19, "necealisha@school.edu", "+1-567-1233"));
-        addStudent(new HonorsStudent("Brooke Melendez", 17, "brookemelendez@school.edu", "+1-324-1434"));
+        addStudent(new HonorsStudent("Bright Tank", 16, "brighttank@college.edu", "+1-550-1122"));
+        addStudent(new RegularStudent("Nece Alisha", 19, "necealisha@academy.edu", "+1-567-1233"));
+        addStudent(new HonorsStudent("Brooke Melendez", 17, "brookemelendez@university.edu", "+1-324-1434"));
         addStudent(new RegularStudent("Beauty Bri", 18, "beautybri@school.edu", "+1-666-6666"));
-        addStudent(new HonorsStudent("Banny Banv", 19, "bannybanv@school.edu", "+1-555-1009"));
+        addStudent(new HonorsStudent("Banny Banv", 19, "bannybanv@college.edu", "+1-555-1009"));
+        addStudent(new RegularStudent("Frank Thompson", 17, "frank.thompson@institute.edu", "+1-444-2001"));
+        addStudent(new HonorsStudent("Grace Anderson", 18, "grace.anderson@university.edu", "+1-444-2002"));
+        addStudent(new RegularStudent("Henry Jackson", 16, "henry.jackson@school.edu", "+1-444-2003"));
+        addStudent(new HonorsStudent("Iris Peterson", 19, "iris.peterson@academy.edu", "+1-444-2004"));
+        addStudent(new RegularStudent("Jack Robinson", 17, "jack.robinson@college.edu", "+1-444-2005"));
+        addStudent(new HonorsStudent("Kelly White", 18, "kelly.white@institute.edu", "+1-444-2006"));
+        addStudent(new RegularStudent("Leo Harris", 16, "leo.harris@university.edu", "+1-444-2007"));
+        addStudent(new HonorsStudent("Mia Clark", 19, "mia.clark@school.edu", "+1-444-2008"));
 
         try {
             addGradeToStudent("STU001", new Grade("STU001", new CoreSubject("Mathematics", "MAT101"), 85.0));
@@ -285,6 +293,43 @@ public class EnhancedStudentManager implements Searchable {
             addGradeToStudent("STU012", new Grade("STU012", new CoreSubject("English", "ENG101"), 87.0));
             addGradeToStudent("STU012", new Grade("STU012", new CoreSubject("Science", "SCI101"), 87.0));
             addGradeToStudent("STU012", new Grade("STU012", new ElectiveSubject("Music", "MUS101"), 88.0));
+
+            addGradeToStudent("STU013", new Grade("STU013", new CoreSubject("Mathematics", "MAT101"), 77.0));
+            addGradeToStudent("STU013", new Grade("STU013", new CoreSubject("English", "ENG101"), 79.0));
+            addGradeToStudent("STU013", new Grade("STU013", new CoreSubject("Science", "SCI101"), 81.0));
+            addGradeToStudent("STU013", new Grade("STU013", new ElectiveSubject("Art", "ART101"), 76.0));
+
+            addGradeToStudent("STU014", new Grade("STU014", new CoreSubject("Mathematics", "MAT101"), 91.0));
+            addGradeToStudent("STU014", new Grade("STU014", new CoreSubject("English", "ENG101"), 94.0));
+            addGradeToStudent("STU014", new Grade("STU014", new CoreSubject("Science", "SCI101"), 92.0));
+            addGradeToStudent("STU014", new Grade("STU014", new ElectiveSubject("Music", "MUS101"), 90.0));
+
+            addGradeToStudent("STU015", new Grade("STU015", new CoreSubject("Mathematics", "MAT101"), 83.0));
+            addGradeToStudent("STU015", new Grade("STU015", new CoreSubject("English", "ENG101"), 85.0));
+            addGradeToStudent("STU015", new Grade("STU015", new CoreSubject("Science", "SCI101"), 84.0));
+
+            addGradeToStudent("STU016", new Grade("STU016", new CoreSubject("Mathematics", "MAT101"), 89.0));
+            addGradeToStudent("STU016", new Grade("STU016", new CoreSubject("English", "ENG101"), 87.0));
+            addGradeToStudent("STU016", new Grade("STU016", new CoreSubject("Science", "SCI101"), 90.0));
+            addGradeToStudent("STU016", new Grade("STU016", new ElectiveSubject("Art", "ART101"), 88.0));
+
+            addGradeToStudent("STU017", new Grade("STU017", new CoreSubject("Mathematics", "MAT101"), 72.0));
+            addGradeToStudent("STU017", new Grade("STU017", new CoreSubject("English", "ENG101"), 74.0));
+            addGradeToStudent("STU017", new Grade("STU017", new CoreSubject("Science", "SCI101"), 73.0));
+
+            addGradeToStudent("STU018", new Grade("STU018", new CoreSubject("Mathematics", "MAT101"), 96.0));
+            addGradeToStudent("STU018", new Grade("STU018", new CoreSubject("English", "ENG101"), 95.0));
+            addGradeToStudent("STU018", new Grade("STU018", new CoreSubject("Science", "SCI101"), 97.0));
+            addGradeToStudent("STU018", new Grade("STU018", new ElectiveSubject("Music", "MUS101"), 94.0));
+
+            addGradeToStudent("STU019", new Grade("STU019", new CoreSubject("Mathematics", "MAT101"), 81.0));
+            addGradeToStudent("STU019", new Grade("STU019", new CoreSubject("English", "ENG101"), 83.0));
+            addGradeToStudent("STU019", new Grade("STU019", new CoreSubject("Science", "SCI101"), 82.0));
+
+            addGradeToStudent("STU020", new Grade("STU020", new CoreSubject("Mathematics", "MAT101"), 92.0));
+            addGradeToStudent("STU020", new Grade("STU020", new CoreSubject("English", "ENG101"), 91.0));
+            addGradeToStudent("STU020", new Grade("STU020", new CoreSubject("Science", "SCI101"), 93.0));
+            addGradeToStudent("STU020", new Grade("STU020", new ElectiveSubject("Art", "ART101"), 90.0));
 
         } catch (Exception e) {
             System.out.println("Error initializing sample data: " + e.getMessage());
