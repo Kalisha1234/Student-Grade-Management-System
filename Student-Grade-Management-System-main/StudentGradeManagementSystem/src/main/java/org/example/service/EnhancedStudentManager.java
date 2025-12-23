@@ -105,12 +105,35 @@ public class EnhancedStudentManager implements Searchable {
         System.out.println("Total Students: " + students.size());
         System.out.println("Total Grades Recorded: " + allGrades.size());
 
-        System.out.println("\nGRADE DISTRIBUTION:");
+        System.out.println("\nGRADE DISTRIBUTION");
+        System.out.println("================================================================================\n");
+        
         Map<String, Integer> distribution = statisticsCalculator.calculateGradeDistribution(allGrades);
-        for (Map.Entry<String, Integer> entry : distribution.entrySet()) {
-            double percentage = allGrades.size() > 0 ? (entry.getValue() * 100.0) / allGrades.size() : 0;
-            System.out.printf("%-12s: %6.1f%% (%d grades)\n",
-                    entry.getKey(), percentage, entry.getValue());
+        int totalGrades = allGrades.size();
+        
+        // Define the order of grade categories
+        String[] gradeOrder = {"A (90-100%)", "B (80-89%)", "C (70-79%)", "D (60-69%)", "F (0-59%)"};
+        
+        for (String gradeCategory : gradeOrder) {
+            Integer count = distribution.getOrDefault(gradeCategory, 0);
+            double percentage = totalGrades > 0 ? (count * 100.0) / totalGrades : 0;
+            
+            // Create visual bar (each block represents ~2%)
+            int barLength = (int) Math.round(percentage / 2.0);
+            StringBuilder bar = new StringBuilder();
+            
+            // Solid part of bar
+            for (int i = 0; i < barLength; i++) {
+                bar.append("█");
+            }
+            
+            // Dotted background (up to 50 characters total)
+            for (int i = barLength; i < 50; i++) {
+                bar.append("░");
+            }
+            
+            System.out.printf("%-15s %s  %5.1f%% (%d grades)\n",
+                    gradeCategory + ":", bar.toString(), percentage, count);
         }
 
         System.out.println("\nSTATISTICAL ANALYSIS:");

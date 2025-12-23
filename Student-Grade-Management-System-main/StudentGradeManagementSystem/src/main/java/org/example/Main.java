@@ -138,6 +138,7 @@ public class Main {
     }
 
     private static void addStudent() {
+        long startTime = System.currentTimeMillis();
         System.out.println("\nADD STUDENT");
         System.out.println();
 
@@ -207,14 +208,17 @@ public class Main {
                 student = new HonorsStudent(name, age, email, phone);
             } else {
                 System.out.println("Invalid choice! Student not added.");
+                auditLogger.log("ADD_STUDENT", "Add student: " + name, System.currentTimeMillis() - startTime, false, "Invalid student type");
                 return;
             }
         } catch (Exception e) {
             System.out.println("Error creating student: " + e.getMessage());
+            auditLogger.log("ADD_STUDENT", "Add student: " + name, System.currentTimeMillis() - startTime, false, e.getMessage());
             return;
         }
 
         studentManager.addStudent(student);
+        auditLogger.log("ADD_STUDENT", "Added student: " + student.getStudentId(), System.currentTimeMillis() - startTime, true, "Type: " + student.getStudentType());
 
         System.out.println("\n✓ Student added successfully!");
         System.out.println("Student ID: " + student.getStudentId());
@@ -232,10 +236,13 @@ public class Main {
     }
 
     private static void viewStudents() {
+        long startTime = System.currentTimeMillis();
         studentManager.viewAllStudents();
+        auditLogger.log("VIEW_STUDENTS", "Viewed all students", System.currentTimeMillis() - startTime, true, "Count: " + studentManager.getAllStudents().size());
     }
 
     private static void recordGrade() {
+        long startTime = System.currentTimeMillis();
         System.out.println("\nRECORD GRADE");
         System.out.println();
 
@@ -318,8 +325,10 @@ public class Main {
 
             if (confirm.equalsIgnoreCase("Y")) {
                 studentManager.addGradeToStudent(studentId, grade);
+                auditLogger.log("RECORD_GRADE", "Recorded grade for " + studentId, System.currentTimeMillis() - startTime, true, subject.getSubjectName() + ": " + gradeValue);
                 System.out.println("\n✓ Grade recorded successfully!");
             } else {
+                auditLogger.log("RECORD_GRADE", "Grade recording cancelled for " + studentId, System.currentTimeMillis() - startTime, false, "User cancelled");
                 System.out.println("Grade recording cancelled.");
             }
 
@@ -339,6 +348,7 @@ public class Main {
     }
 
     private static void viewGradeReport() {
+        long startTime = System.currentTimeMillis();
         System.out.println("\nVIEW GRADE REPORT");
         System.out.println();
 
@@ -347,6 +357,7 @@ public class Main {
 
         try {
             Student student = studentManager.searchById(studentId);
+            auditLogger.log("VIEW_REPORT", "Viewed report for " + studentId, System.currentTimeMillis() - startTime, true, "Grades: " + student.getGrades().size());
 
             System.out.println("Student: " + student.getStudentId() + " - " + student.getName());
             System.out.println("Type: " + student.getStudentType() + " Student");
@@ -406,11 +417,13 @@ public class Main {
             }
 
         } catch (StudentNotFoundException e) {
+            auditLogger.log("VIEW_REPORT", "Failed to view report for " + studentId, System.currentTimeMillis() - startTime, false, e.getMessage());
             System.out.println("\n✗ Error: " + e.getMessage());
         }
     }
 
     private static void exportGradeReport() {
+        long startTime = System.currentTimeMillis();
         System.out.println("\nEXPORT GRADE REPORT");
         System.out.println();
 
@@ -436,15 +449,18 @@ public class Main {
 
             if (option == 1) {
                 fileExporter.exportSummaryReport(studentId, filename);
+                auditLogger.log("EXPORT_REPORT", "Exported summary for " + studentId, System.currentTimeMillis() - startTime, true, filename);
                 System.out.println("\n✓ Summary report exported successfully!");
                 System.out.println("File: " + filename + "_summary.txt");
             } else if (option == 2) {
                 fileExporter.exportDetailedReport(studentId, filename);
+                auditLogger.log("EXPORT_REPORT", "Exported detailed for " + studentId, System.currentTimeMillis() - startTime, true, filename);
                 System.out.println("\n✓ Detailed report exported successfully!");
                 System.out.println("File: " + filename + "_detailed.txt");
             } else if (option == 3) {
                 fileExporter.exportSummaryReport(studentId, filename);
                 fileExporter.exportDetailedReport(studentId, filename);
+                auditLogger.log("EXPORT_REPORT", "Exported both reports for " + studentId, System.currentTimeMillis() - startTime, true, filename);
                 System.out.println("\n✓ Both reports exported successfully!");
                 System.out.println("Files: " + filename + "_summary.txt, " + filename + "_detailed.txt");
             } else {
@@ -464,6 +480,7 @@ public class Main {
     }
 
     private static void calculateGPA() {
+        long startTime = System.currentTimeMillis();
         System.out.println("\nCALCULATE STUDENT GPA");
         System.out.println();
 
@@ -472,12 +489,15 @@ public class Main {
 
         try {
             studentManager.displayGPAReport(studentId);
+            auditLogger.log("CALCULATE_GPA", "Calculated GPA for " + studentId, System.currentTimeMillis() - startTime, true, "");
         } catch (StudentNotFoundException e) {
+            auditLogger.log("CALCULATE_GPA", "Failed GPA calculation for " + studentId, System.currentTimeMillis() - startTime, false, e.getMessage());
             System.out.println("\n✗ Error: " + e.getMessage());
         }
     }
 
     private static void bulkImportGrades() {
+        long startTime = System.currentTimeMillis();
         System.out.println("\nBULK IMPORT GRADES");
         System.out.println("\nPlace your CSV file in: ./imports/");
         System.out.println("\nCSV Format Required:");
@@ -491,6 +511,7 @@ public class Main {
         System.out.println("Processing grades...\n");
 
         ImportResult result = bulkImportService.importResult(filename);
+        auditLogger.log("BULK_IMPORT", "Imported grades from " + filename, System.currentTimeMillis() - startTime, true, "Success: " + result.getSuccessful() + ", Failed: " + result.getFailed());
 
         System.out.println("IMPORT SUMMARY");
         System.out.println("\nTotal Rows: " + (result.getSuccessful() + result.getFailed()));
@@ -510,10 +531,13 @@ public class Main {
     }
 
     private static void viewClassStatistics() {
+        long startTime = System.currentTimeMillis();
         studentManager.calculateAndDisplayStatistics();
+        auditLogger.log("VIEW_STATISTICS", "Viewed class statistics", System.currentTimeMillis() - startTime, true, "");
     }
 
     private static void searchStudents() {
+        long startTime = System.currentTimeMillis();
         System.out.println("\nSEARCH STUDENTS");
         System.out.println("\nSearch options:");
         System.out.println("1. By Student ID");
@@ -532,8 +556,10 @@ public class Main {
                 try {
                     Student student = studentManager.searchById(studentId);
                     results.add(student);
+                    auditLogger.log("SEARCH", "Search by ID: " + studentId, System.currentTimeMillis() - startTime, true, "Found");
                     System.out.println("\nSEARCH RESULTS (1 found)");
                 } catch (StudentNotFoundException e) {
+                    auditLogger.log("SEARCH", "Search by ID: " + studentId, System.currentTimeMillis() - startTime, false, "Not found");
                     System.out.println("\n✗ " + e.getMessage());
                     return;
                 }
@@ -543,6 +569,7 @@ public class Main {
                 System.out.print("Enter name (partial or full): ");
                 String name = scanner.nextLine();
                 results = studentManager.searchByName(name);
+                auditLogger.log("SEARCH", "Search by name: " + name, System.currentTimeMillis() - startTime, true, "Found: " + results.size());
                 System.out.println("\nSEARCH RESULTS (" + results.size() + " found)");
                 break;
 
@@ -552,6 +579,7 @@ public class Main {
                 System.out.print("Enter maximum grade (0-100): ");
                 double max = getDoubleInput();
                 results = studentManager.searchByGradeRange(min, max);
+                auditLogger.log("SEARCH", "Search by grade range: " + min + "-" + max, System.currentTimeMillis() - startTime, true, "Found: " + results.size());
                 System.out.println("\nSEARCH RESULTS (" + results.size() + " found)");
                 break;
 
@@ -559,6 +587,7 @@ public class Main {
                 System.out.print("Enter student type (Regular/Honors): ");
                 String type = scanner.nextLine();
                 results = studentManager.searchByType(type);
+                auditLogger.log("SEARCH", "Search by type: " + type, System.currentTimeMillis() - startTime, true, "Found: " + results.size());
                 System.out.println("\nSEARCH RESULTS (" + results.size() + " found)");
                 break;
 
@@ -791,6 +820,7 @@ public class Main {
     }
 
     private static void batchReportGeneration() {
+        long startTime = System.currentTimeMillis();
         System.out.println("\nBATCH REPORT GENERATION");
         System.out.println();
         
@@ -848,6 +878,7 @@ public class Main {
                 .collect(java.util.stream.Collectors.toList());
                 
             BatchReportResult result = concurrentReportGenerator.generateBatchReports(studentIds, reportType, threadCount);
+            auditLogger.log("BATCH_REPORT", "Generated " + reportType + " reports", System.currentTimeMillis() - startTime, true, "Count: " + result.getSuccessfulReports() + ", Time: " + result.getTotalTimeMs() + "ms");
             
             System.out.println("\n✓ Batch report generation completed!");
             System.out.println("Total reports: " + result.getTotalReports());
@@ -1063,10 +1094,15 @@ public class Main {
             }
         }
         
+        if (auditLogger != null) {
+            auditLogger.shutdown();
+        }
+        
         scanner.close();
     }
 
     private static void cacheManagement() {
+        long startTime = System.currentTimeMillis();
         System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
         System.out.println("║              CACHE MANAGEMENT                                 ║");
         System.out.println("╚══════════════════════════════════════════════════════════════╝\n");
@@ -1084,16 +1120,20 @@ public class Main {
         switch (choice) {
             case 1:
                 cacheManager.displayStatistics();
+                auditLogger.log("CACHE_MGMT", "Viewed cache statistics", System.currentTimeMillis() - startTime, true, "");
                 break;
             case 2:
                 cacheManager.displayCacheContents();
+                auditLogger.log("CACHE_MGMT", "Viewed cache contents", System.currentTimeMillis() - startTime, true, "");
                 break;
             case 3:
                 System.out.print("\nAre you sure you want to clear all caches? (Y/N): ");
                 String confirm = scanner.nextLine();
                 if (confirm.equalsIgnoreCase("Y")) {
                     cacheManager.clearAll();
+                    auditLogger.log("CACHE_MGMT", "Cleared all caches", System.currentTimeMillis() - startTime, true, "");
                 } else {
+                    auditLogger.log("CACHE_MGMT", "Clear cancelled", System.currentTimeMillis() - startTime, false, "User cancelled");
                     System.out.println("Operation cancelled.");
                 }
                 break;
@@ -1101,10 +1141,12 @@ public class Main {
                 System.out.print("Enter Student ID to invalidate: ");
                 String studentId = scanner.nextLine();
                 cacheManager.invalidateStudent(studentId);
+                auditLogger.log("CACHE_MGMT", "Invalidated cache for " + studentId, System.currentTimeMillis() - startTime, true, "");
                 System.out.println("✓ Cache invalidated for " + studentId);
                 break;
             case 5:
                 testLRUEviction();
+                auditLogger.log("CACHE_MGMT", "LRU eviction test", System.currentTimeMillis() - startTime, true, "200 entries");
                 break;
             case 6:
                 return;
@@ -1344,6 +1386,148 @@ public class Main {
         cacheManager.displayStatistics();
     }
 
+    private static void auditTrailViewer() {
+        System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║              AUDIT TRAIL VIEWER                               ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝\n");
+        
+        System.out.println("1. View Recent Entries (Last 50)");
+        System.out.println("2. Search by Operation Type");
+        System.out.println("3. Search by Thread ID");
+        System.out.println("4. Search by Date Range");
+        System.out.println("5. View Audit Statistics");
+        System.out.println("6. Return to Main Menu");
+        System.out.print("\nSelect option (1-6): ");
+        
+        int choice = getIntInput();
+        
+        switch (choice) {
+            case 1:
+                displayRecentEntries();
+                break;
+            case 2:
+                searchByOperationType();
+                break;
+            case 3:
+                searchByThreadId();
+                break;
+            case 4:
+                searchByDateRange();
+                break;
+            case 5:
+                displayAuditStatistics();
+                break;
+            case 6:
+                return;
+            default:
+                System.out.println("Invalid choice!");
+        }
+    }
+    
+    private static void displayRecentEntries() {
+        List<AuditEntry> entries = auditLogger.getRecentEntries(50);
+        
+        if (entries.isEmpty()) {
+            System.out.println("\nNo audit entries found.");
+            return;
+        }
+        
+        System.out.println("\n═══════════════════════════════════════════════════════════════");
+        System.out.println("RECENT AUDIT ENTRIES (Last " + entries.size() + ")");
+        System.out.println("═══════════════════════════════════════════════════════════════\n");
+        
+        for (AuditEntry entry : entries) {
+            System.out.printf("%s | Thread-%d | %s | %s | %dms | %s\n",
+                entry.getTimestamp().substring(11, 19),
+                entry.getThreadId(),
+                entry.getOperationType(),
+                entry.getUserAction(),
+                entry.getExecutionTimeMs(),
+                entry.isSuccess() ? "✓" : "✗");
+        }
+    }
+    
+    private static void searchByOperationType() {
+        System.out.print("\nEnter operation type (ADD_STUDENT/RECORD_GRADE/VIEW_STUDENTS/SEARCH/EXPORT/etc): ");
+        String operationType = scanner.nextLine();
+        
+        List<AuditEntry> entries = auditLogger.searchByOperationType(operationType);
+        
+        if (entries.isEmpty()) {
+            System.out.println("\nNo entries found for operation type: " + operationType);
+            return;
+        }
+        
+        System.out.println("\nFound " + entries.size() + " entries for " + operationType + ":\n");
+        for (AuditEntry entry : entries) {
+            System.out.println(entry.toLogString());
+        }
+    }
+    
+    private static void searchByThreadId() {
+        System.out.print("\nEnter Thread ID: ");
+        long threadId = Long.parseLong(scanner.nextLine());
+        
+        List<AuditEntry> entries = auditLogger.searchByThreadId(threadId);
+        
+        if (entries.isEmpty()) {
+            System.out.println("\nNo entries found for Thread-" + threadId);
+            return;
+        }
+        
+        System.out.println("\nFound " + entries.size() + " entries for Thread-" + threadId + ":\n");
+        for (AuditEntry entry : entries) {
+            System.out.println(entry.toLogString());
+        }
+    }
+    
+    private static void searchByDateRange() {
+        System.out.println("\nEnter start date/time (YYYY-MM-DDTHH:MM:SS): ");
+        String startStr = scanner.nextLine();
+        System.out.println("Enter end date/time (YYYY-MM-DDTHH:MM:SS): ");
+        String endStr = scanner.nextLine();
+        
+        try {
+            java.time.LocalDateTime start = java.time.LocalDateTime.parse(startStr);
+            java.time.LocalDateTime end = java.time.LocalDateTime.parse(endStr);
+            
+            List<AuditEntry> entries = auditLogger.searchByDateRange(start, end);
+            
+            if (entries.isEmpty()) {
+                System.out.println("\nNo entries found in date range.");
+                return;
+            }
+            
+            System.out.println("\nFound " + entries.size() + " entries:\n");
+            for (AuditEntry entry : entries) {
+                System.out.println(entry.toLogString());
+            }
+        } catch (Exception e) {
+            System.out.println("\n✗ Invalid date format: " + e.getMessage());
+        }
+    }
+    
+    private static void displayAuditStatistics() {
+        Map<String, Object> stats = auditLogger.getStatistics();
+        
+        System.out.println("\n═══════════════════════════════════════════════════════════════");
+        System.out.println("AUDIT STATISTICS");
+        System.out.println("═══════════════════════════════════════════════════════════════\n");
+        
+        System.out.println("Total Operations: " + stats.get("totalOperations"));
+        System.out.printf("Average Execution Time: %.2fms\n", (Double) stats.get("averageExecutionTime"));
+        System.out.printf("Success Rate: %.1f%%\n", (Double) stats.get("successRate"));
+        
+        System.out.println("\nOperation Breakdown:");
+        @SuppressWarnings("unchecked")
+        Map<String, Long> breakdown = (Map<String, Long>) stats.get("operationBreakdown");
+        if (breakdown != null) {
+            for (Map.Entry<String, Long> entry : breakdown.entrySet()) {
+                System.out.printf("  %-20s: %d operations\n", entry.getKey(), entry.getValue());
+            }
+        }
+    }
+    
     private static void exportPatternSearchResults(PatternSearchResult result) {
         System.out.print("\nEnter filename (without extension): ");
         String filename = scanner.nextLine();
