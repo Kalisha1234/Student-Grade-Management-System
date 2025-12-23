@@ -20,6 +20,8 @@ public class Main {
     private static EnhancedFileOperations enhancedFileOps;
     private static ConcurrentReportGenerator concurrentReportGenerator;
     private static RealTimeStatisticsDashboard statisticsDashboard;
+    private static TaskScheduler taskScheduler;
+    private static PatternSearchService patternSearchService;
     private static Scanner scanner;
 
     // Validation patterns
@@ -41,6 +43,8 @@ public class Main {
         fileExporter.setStudentManager(studentManager);
         concurrentReportGenerator = new ConcurrentReportGenerator(fileExporter, studentManager);
         statisticsDashboard = new RealTimeStatisticsDashboard(studentManager);
+        taskScheduler = new TaskScheduler(studentManager);
+        patternSearchService = new PatternSearchService(studentManager);
         bulkImportService = new BulkImportService(studentManager, csvParser, fileExporter);
         
         try {
@@ -72,7 +76,9 @@ public class Main {
             System.out.println("11. File Operations");
             System.out.println("12. Batch Report Generation");
             System.out.println("13. Real-Time Statistics Dashboard");
-            System.out.println("14. Exit");
+            System.out.println("14. Scheduled Tasks Manager");
+            System.out.println("15. Advanced Pattern Search");
+            System.out.println("16. Exit");
             System.out.print("\nEnter choice: ");
 
             try {
@@ -92,8 +98,10 @@ public class Main {
                     case 11: fileOperationsMenu(); break;
                     case 12: batchReportGeneration(); break;
                     case 13: realTimeStatisticsDashboard(); break;
-                    case 14: exitApplication(); return;
-                    default: System.out.println("Invalid choice! Please enter 1-14.");
+                    case 14: scheduledTasksManager(); break;
+                    case 15: advancedPatternSearch(); break;
+                    case 16: exitApplication(); return;
+                    default: System.out.println("Invalid choice! Please enter 1-16.");
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
@@ -831,6 +839,159 @@ public class Main {
         statisticsDashboard.startDashboard();
     }
 
+    private static void scheduledTasksManager() {
+        System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║              SCHEDULED TASKS MANAGER                         ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝");
+        
+        System.out.println("\n1. View All Scheduled Tasks");
+        System.out.println("2. Add Custom Task");
+        System.out.println("3. Configure & Schedule GPA Recalculation");
+        System.out.println("4. Return to Main Menu");
+        System.out.print("\nSelect option (1-4): ");
+        
+        int choice = getIntInput();
+        
+        switch (choice) {
+            case 1:
+                taskScheduler.displayAllTasks();
+                break;
+            case 2:
+                taskScheduler.addCustomTask();
+                break;
+            case 3:
+                taskScheduler.scheduleGPARecalculationWithConfig();
+                break;
+            case 4:
+                return;
+            default:
+                System.out.println("Invalid choice!");
+        }
+    }
+
+    private static void advancedPatternSearch() {
+        System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║           ADVANCED PATTERN SEARCH                           ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝\n");
+        
+        System.out.println("Search by:");
+        System.out.println("1. Email Domain Pattern (e.g., school.edu)");
+        System.out.println("2. Phone Area Code Pattern (e.g., 555)");
+        System.out.println("3. Student ID Pattern (e.g., STU0**)");
+        System.out.println("4. Name Pattern (e.g., son)");
+        System.out.println("5. Custom Regex Pattern");
+        System.out.println("6. Return to Main Menu");
+        System.out.print("\nSelect option (1-6): ");
+        
+        int choice = getIntInput();
+        
+        try {
+            PatternSearchResult result = null;
+            boolean caseInsensitive = false;
+            
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter email domain pattern (e.g., school.edu): ");
+                    String domain = scanner.nextLine();
+                    System.out.print("Case insensitive? (Y/N): ");
+                    caseInsensitive = scanner.nextLine().equalsIgnoreCase("Y");
+                    result = patternSearchService.searchByEmailDomain(domain, caseInsensitive);
+                    break;
+                    
+                case 2:
+                    System.out.print("Enter phone area code (e.g., 1-555): ");
+                    String areaCode = scanner.nextLine();
+                    result = patternSearchService.searchByPhoneAreaCode(areaCode);
+                    break;
+                    
+                case 3:
+                    System.out.print("Enter student ID pattern (use * for wildcard, e.g., STU0**): ");
+                    String idPattern = scanner.nextLine();
+                    result = patternSearchService.searchByStudentIdPattern(idPattern);
+                    break;
+                    
+                case 4:
+                    System.out.print("Enter name pattern (e.g., son): ");
+                    String namePattern = scanner.nextLine();
+                    System.out.print("Case insensitive? (Y/N): ");
+                    caseInsensitive = scanner.nextLine().equalsIgnoreCase("Y");
+                    result = patternSearchService.searchByNamePattern(namePattern, caseInsensitive);
+                    break;
+                    
+                case 5:
+                    System.out.print("Enter custom regex pattern: ");
+                    String customPattern = scanner.nextLine();
+                    System.out.println("\nPattern Complexity: " + patternSearchService.analyzePatternComplexity(customPattern));
+                    System.out.print("\nSearch in field (email/phone/id/name): ");
+                    String field = scanner.nextLine();
+                    System.out.print("Case insensitive? (Y/N): ");
+                    caseInsensitive = scanner.nextLine().equalsIgnoreCase("Y");
+                    result = patternSearchService.searchByCustomPattern(customPattern, field, caseInsensitive);
+                    break;
+                    
+                case 6:
+                    return;
+                    
+                default:
+                    System.out.println("Invalid choice!");
+                    return;
+            }
+            
+            if (result != null) {
+                patternSearchService.displaySearchResults(result);
+                
+                if (!result.getMatches().isEmpty()) {
+                    System.out.println("\n═══════════════════════════════════════════════════════════════");
+                    System.out.println("BULK OPERATIONS:");
+                    System.out.println("1. Export matched students");
+                    System.out.println("2. Generate reports for matched students");
+                    System.out.println("3. Export search results to file");
+                    System.out.println("4. Return to menu");
+                    System.out.print("\nSelect option (1-4): ");
+                    
+                    int bulkChoice = getIntInput();
+                    
+                    switch (bulkChoice) {
+                        case 1:
+                            System.out.print("Enter filename for export: ");
+                            String filename = scanner.nextLine();
+                            List<Student> matchedStudents = new ArrayList<>();
+                            for (PatternSearchResult.StudentMatch match : result.getMatches()) {
+                                matchedStudents.add(match.getStudent());
+                            }
+                            fileExporter.exportSearchResults(matchedStudents, filename);
+                            System.out.println("✓ Exported " + matchedStudents.size() + " students");
+                            break;
+                            
+                        case 2:
+                            System.out.print("Enter number of threads (2-8): ");
+                            int threads = getIntInput();
+                            List<String> studentIds = new ArrayList<>();
+                            for (PatternSearchResult.StudentMatch match : result.getMatches()) {
+                                studentIds.add(match.getStudent().getStudentId());
+                            }
+                            BatchReportResult batchResult = concurrentReportGenerator.generateBatchReports(studentIds, "summary", threads);
+                            System.out.println("✓ Generated " + batchResult.getSuccessfulReports() + " reports in " + batchResult.getTotalTimeMs() + "ms");
+                            break;
+                            
+                        case 3:
+                            exportPatternSearchResults(result);
+                            break;
+                            
+                        case 4:
+                            break;
+                    }
+                }
+            }
+            
+        } catch (IllegalArgumentException e) {
+            System.out.println("\n✗ ERROR: " + e.getMessage());
+            System.out.println("Please check your regex pattern syntax.");
+        } catch (Exception e) {
+            System.out.println("\n✗ ERROR: " + e.getMessage());
+        }
+    }
+
     private static void displayDirectoryStatus() {
         System.out.println("\n=== DIRECTORY STATUS ===");
         
@@ -861,6 +1022,10 @@ public class Main {
         System.out.println("\nThank you for using Enhanced Student Grade Management System!");
         System.out.println("Goodbye!");
         
+        if (taskScheduler != null) {
+            taskScheduler.shutdown();
+        }
+        
         if (enhancedFileOps != null) {
             try {
                 enhancedFileOps.close();
@@ -870,6 +1035,69 @@ public class Main {
         }
         
         scanner.close();
+    }
+
+    private static void exportPatternSearchResults(PatternSearchResult result) {
+        System.out.print("\nEnter filename (without extension): ");
+        String filename = scanner.nextLine();
+        
+        try {
+            Path reportsDir = Paths.get("./reports");
+            Files.createDirectories(reportsDir);
+            Path outputFile = reportsDir.resolve(filename + "_pattern_search.txt");
+            
+            StringBuilder content = new StringBuilder();
+            content.append("═══════════════════════════════════════════════════════════════\n");
+            content.append("           PATTERN SEARCH RESULTS EXPORT\n");
+            content.append("═══════════════════════════════════════════════════════════════\n\n");
+            
+            content.append("Search Pattern: ").append(result.getPattern()).append("\n");
+            content.append("Total Students Scanned: ").append(result.getTotalScanned()).append("\n");
+            content.append("Matches Found: ").append(result.getMatches().size()).append("\n");
+            content.append("Search Time: ").append(result.getSearchTimeMs()).append("ms\n");
+            content.append("Export Date: ").append(java.time.LocalDateTime.now()).append("\n\n");
+            
+            content.append("───────────────────────────────────────────────────────────────\n");
+            content.append("MATCHED STUDENTS\n");
+            content.append("───────────────────────────────────────────────────────────────\n\n");
+            
+            for (PatternSearchResult.StudentMatch match : result.getMatches()) {
+                Student student = match.getStudent();
+                content.append("Student ID: ").append(student.getStudentId()).append("\n");
+                content.append("Name: ").append(student.getName()).append("\n");
+                content.append("Type: ").append(student.getStudentType()).append("\n");
+                content.append("Email: ").append(student.getEmail()).append("\n");
+                content.append("Phone: ").append(student.getPhone()).append("\n");
+                content.append("GPA: ").append(String.format("%.2f%%", student.calculateAverageGrade())).append("\n");
+                content.append("Matched Field: ").append(match.getField()).append("\n");
+                content.append("Matched Text: ").append(match.getHighlightedText()).append("\n");
+                content.append("\n");
+            }
+            
+            if (!result.getDistributionStats().isEmpty()) {
+                content.append("───────────────────────────────────────────────────────────────\n");
+                content.append("DISTRIBUTION STATISTICS\n");
+                content.append("───────────────────────────────────────────────────────────────\n\n");
+                
+                for (Map.Entry<String, Integer> entry : result.getDistributionStats().entrySet()) {
+                    content.append(entry.getKey()).append(": ").append(entry.getValue()).append(" students\n");
+                }
+            }
+            
+            content.append("\n═══════════════════════════════════════════════════════════════\n");
+            content.append("End of Report\n");
+            content.append("═══════════════════════════════════════════════════════════════\n");
+            
+            Files.write(outputFile, content.toString().getBytes());
+            
+            System.out.println("\n✓ Search results exported successfully!");
+            System.out.println("File: " + outputFile.getFileName());
+            System.out.println("Location: ./reports/");
+            System.out.println("Matches exported: " + result.getMatches().size());
+            
+        } catch (IOException e) {
+            System.out.println("\n✗ Error exporting search results: " + e.getMessage());
+        }
     }
 
     // Validation methods
