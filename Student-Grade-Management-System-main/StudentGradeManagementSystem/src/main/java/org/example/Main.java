@@ -19,6 +19,7 @@ public class Main {
     private static ReportGenerator reportGenerator;
     private static EnhancedFileOperations enhancedFileOps;
     private static ConcurrentReportGenerator concurrentReportGenerator;
+    private static RealTimeStatisticsDashboard statisticsDashboard;
     private static Scanner scanner;
 
     // Validation patterns
@@ -39,6 +40,7 @@ public class Main {
         fileExporter = new FileExporter(reportGenerator, gpaCalculator);
         fileExporter.setStudentManager(studentManager);
         concurrentReportGenerator = new ConcurrentReportGenerator(fileExporter, studentManager);
+        statisticsDashboard = new RealTimeStatisticsDashboard(studentManager);
         bulkImportService = new BulkImportService(studentManager, csvParser, fileExporter);
         
         try {
@@ -69,7 +71,8 @@ public class Main {
             System.out.println("10. Search Students");
             System.out.println("11. File Operations");
             System.out.println("12. Batch Report Generation");
-            System.out.println("13. Exit");
+            System.out.println("13. Real-Time Statistics Dashboard");
+            System.out.println("14. Exit");
             System.out.print("\nEnter choice: ");
 
             try {
@@ -88,8 +91,9 @@ public class Main {
                     case 10: searchStudents(); break;
                     case 11: fileOperationsMenu(); break;
                     case 12: batchReportGeneration(); break;
-                    case 13: exitApplication(); return;
-                    default: System.out.println("Invalid choice! Please enter 1-13.");
+                    case 13: realTimeStatisticsDashboard(); break;
+                    case 14: exitApplication(); return;
+                    default: System.out.println("Invalid choice! Please enter 1-14.");
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
@@ -821,6 +825,10 @@ public class Main {
         } catch (Exception e) {
             System.out.println("\n✗ Error generating batch reports: " + e.getMessage());
         }
+    }
+
+    private static void realTimeStatisticsDashboard() {
+        statisticsDashboard.startDashboard();
     }
 
     private static void displayDirectoryStatus() {

@@ -1,7 +1,0 @@
-=== IMPORT LOG ===
-Date: Tue Dec 09 09:35:25 GMT 2025
-File: sample_grades
-Total Rows: 27
-Successfully Imported: 27
-Failed: 0
-
