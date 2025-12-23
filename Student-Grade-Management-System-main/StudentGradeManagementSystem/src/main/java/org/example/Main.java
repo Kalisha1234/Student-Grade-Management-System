@@ -23,7 +23,7 @@ public class Main {
     private static TaskScheduler taskScheduler;
     private static PatternSearchService patternSearchService;
     private static CacheManager cacheManager;
-    private static AuditLogger auditLogger;
+    private static StreamDataProcessor streamDataProcessor;
     private static Scanner scanner;
 
     // Validation patterns
@@ -48,7 +48,7 @@ public class Main {
         taskScheduler = new TaskScheduler(studentManager);
         patternSearchService = new PatternSearchService(studentManager);
         cacheManager = new CacheManager(studentManager);
-        auditLogger = new AuditLogger();
+        streamDataProcessor = new StreamDataProcessor(studentManager, gpaCalculator);
         bulkImportService = new BulkImportService(studentManager, csvParser, fileExporter);
         
         try {
@@ -64,28 +64,44 @@ public class Main {
 
     private static void displayMainMenu() {
         while (true) {
-            System.out.println("\n==========================================");
-            System.out.println("  STUDENT GRADE MANAGEMENT");
-            System.out.println("==========================================");
-            System.out.println("1. Add Student");
+            System.out.println("\n┌─────────────────────────────────────────────────────────┐");
+            System.out.println("│     STUDENT GRADE MANAGEMENT - MAIN MENU                │");
+            System.out.println("│              [Advanced Edition v3.0]                    │");
+            System.out.println("└─────────────────────────────────────────────────────────┘");
+            System.out.println();
+            System.out.println("STUDENT MANAGEMENT");
+            System.out.println("1. Add Student (with validation)");
             System.out.println("2. View Students");
             System.out.println("3. Record Grade");
             System.out.println("4. View Grade Report");
+            System.out.println();
+            System.out.println("FILE OPERATIONS");
             System.out.println("5. Export Grade Report (CSV/JSON/Binary)");
-            System.out.println("6. Import Data (Multi-format support)");
+            System.out.println("6. Import Data (Multi-format support)        [ENHANCED]");
             System.out.println("7. Bulk Import Grades");
+            System.out.println();
+            System.out.println("ANALYTICS & REPORTING");
             System.out.println("8. Calculate Student GPA");
             System.out.println("9. View Class Statistics");
-            System.out.println("10. Search Students");
-            System.out.println("11. File Operations");
-            System.out.println("12. Batch Report Generation");
-            System.out.println("13. Real-Time Statistics Dashboard");
-            System.out.println("14. Scheduled Tasks Manager");
-            System.out.println("15. Advanced Pattern Search");
-            System.out.println("16. Cache Management");
-            System.out.println("17. Audit Trail Viewer");
-            System.out.println("18. Exit");
-            System.out.print("\nEnter choice: ");
+            System.out.println("10. Real-Time Statistics Dashboard           [NEW]");
+            System.out.println("11. Generate Batch Reports                   [NEW]");
+            System.out.println();
+            System.out.println("SEARCH & QUERY");
+            System.out.println("12. Search Students (Advanced)               [ENHANCED]");
+            System.out.println("13. Pattern-Based Search                     [NEW]");
+            System.out.println("14. Stream-Based Data Processing             [NEW]");
+            System.out.println();
+            System.out.println("ADVANCED FEATURES");
+            System.out.println("15. Schedule Automated Tasks                 [NEW]");
+            System.out.println("16. View System Performance                  [NEW]");
+            System.out.println("17. Cache Management                         [NEW]");
+            System.out.println("18. File Operations Menu                     [NEW]");
+            System.out.println();
+            System.out.println("19. Exit");
+            System.out.println();
+            System.out.println("Background Tasks: ⚡ 3 active | 📊 Stats updating...");
+            System.out.println();
+            System.out.print("Enter choice: ");
 
             try {
                 int choice = getIntInput();
@@ -100,16 +116,17 @@ public class Main {
                     case 7: bulkImportGrades(); break;
                     case 8: calculateGPA(); break;
                     case 9: viewClassStatistics(); break;
-                    case 10: searchStudents(); break;
-                    case 11: fileOperationsMenu(); break;
-                    case 12: batchReportGeneration(); break;
-                    case 13: realTimeStatisticsDashboard(); break;
-                    case 14: scheduledTasksManager(); break;
-                    case 15: advancedPatternSearch(); break;
-                    case 16: cacheManagement(); break;
-                    case 17: auditTrailViewer(); break;
-                    case 18: exitApplication(); return;
-                    default: System.out.println("Invalid choice! Please enter 1-18.");
+                    case 10: realTimeStatisticsDashboard(); break;
+                    case 11: batchReportGeneration(); break;
+                    case 12: searchStudents(); break;
+                    case 13: advancedPatternSearch(); break;
+                    case 14: streamDataProcessing(); break;
+                    case 15: scheduledTasksManager(); break;
+                    case 16: displaySystemPerformance(); break;
+                    case 17: cacheManagement(); break;
+                    case 18: fileOperationsMenu(); break;
+                    case 19: exitApplication(); return;
+                    default: System.out.println("Invalid choice! Please enter 1-19.");
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
@@ -1138,6 +1155,210 @@ public class Main {
         }
     }
     
+    private static void streamDataProcessing() {
+        System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║         STREAM-BASED DATA PROCESSING                         ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝\n");
+        
+        System.out.println("1. Full Demo (All Stream Operations)");
+        System.out.println("2. Filter: Honors Students with GPA > 3.5");
+        System.out.println("3. Map: Extract All Emails");
+        System.out.println("4. Reduce: Calculate Total Grades");
+        System.out.println("5. Group Students by Grade Range");
+        System.out.println("6. Partition by Passing Status");
+        System.out.println("7. Average Grade per Subject");
+        System.out.println("8. Extract Unique Course Codes");
+        System.out.println("9. Top 5 Students");
+        System.out.println("10. Match Operations Demo");
+        System.out.println("11. Sequential vs Parallel Comparison");
+        System.out.println("12. Stream Processing Performance Test");
+        System.out.println("13. Return to Main Menu");
+        System.out.print("\nSelect option (1-13): ");
+        
+        int choice = getIntInput();
+        
+        switch (choice) {
+            case 1:
+                streamDataProcessor.displayStreamOperationsDemo();
+                break;
+            case 2:
+                System.out.print("Enter minimum GPA (0.0-4.0): ");
+                double minGPA = getDoubleInput();
+                List<Student> honorsStudents = streamDataProcessor.findHonorsStudentsAboveGPA(minGPA);
+                System.out.println("\nResults: " + honorsStudents.size() + " students found");
+                honorsStudents.forEach(s -> System.out.printf("  %s - %s (%.2f%%)\n", 
+                    s.getStudentId(), s.getName(), s.calculateAverageGrade()));
+                break;
+            case 3:
+                List<String> emails = streamDataProcessor.extractAllEmails();
+                System.out.println("\nExtracted " + emails.size() + " emails:");
+                emails.forEach(e -> System.out.println("  " + e));
+                break;
+            case 4:
+                double total = streamDataProcessor.calculateTotalGrades();
+                System.out.printf("\nTotal of all grades: %.2f\n", total);
+                break;
+            case 5:
+                Map<String, List<Student>> grouped = streamDataProcessor.groupStudentsByGradeRange();
+                System.out.println("\nStudents grouped by grade range:");
+                grouped.forEach((range, students) -> {
+                    System.out.println("\n" + range + " (" + students.size() + " students):");
+                    students.forEach(s -> System.out.printf("  %s - %s (%.2f%%)\n", 
+                        s.getStudentId(), s.getName(), s.calculateAverageGrade()));
+                });
+                break;
+            case 6:
+                Map<Boolean, List<Student>> partitioned = streamDataProcessor.partitionByPassingStatus();
+                System.out.println("\nPassing: " + partitioned.get(true).size() + " students");
+                System.out.println("Failing: " + partitioned.get(false).size() + " students");
+                break;
+            case 7:
+                Map<String, Double> avgBySubject = streamDataProcessor.calculateAverageGradePerSubject();
+                System.out.println("\nAverage grade per subject:");
+                avgBySubject.forEach((subject, avg) -> 
+                    System.out.printf("  %s: %.2f%%\n", subject, avg));
+                break;
+            case 8:
+                Set<String> courses = streamDataProcessor.extractUniqueCourses();
+                System.out.println("\nUnique course codes: " + courses.size());
+                System.out.println("  " + String.join(", ", courses));
+                break;
+            case 9:
+                List<Student> top5 = streamDataProcessor.findTop5Students();
+                System.out.println("\nTop 5 Students:");
+                for (int i = 0; i < top5.size(); i++) {
+                    Student s = top5.get(i);
+                    System.out.printf("  %d. %s - %s (%.2f%%)\n", 
+                        i + 1, s.getStudentId(), s.getName(), s.calculateAverageGrade());
+                }
+                break;
+            case 10:
+                System.out.println("\nMatch Operations:");
+                System.out.println("  anyMatch - Has failing students: " + streamDataProcessor.hasFailingStudents());
+                System.out.println("  allMatch - All students have grades: " + streamDataProcessor.allStudentsHaveGrades());
+                System.out.println("  noneMatch - No students below min GPA: " + streamDataProcessor.noStudentsBelowMinGPA());
+                break;
+            case 11:
+                streamDataProcessor.compareSequentialVsParallel();
+                break;
+            case 12:
+                streamProcessingPerformanceTest();
+                break;
+            case 13:
+                return;
+            default:
+                System.out.println("Invalid choice!");
+        }
+    }
+
+    private static void displaySystemPerformance() {
+        System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║              SYSTEM PERFORMANCE                            ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝\n");
+        
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory();
+        long freeMemory = runtime.freeMemory();
+        long usedMemory = totalMemory - freeMemory;
+        long maxMemory = runtime.maxMemory();
+        
+        System.out.println("MEMORY USAGE:");
+        System.out.println("  Total Memory:     " + formatMemory(totalMemory));
+        System.out.println("  Used Memory:      " + formatMemory(usedMemory));
+        System.out.println("  Free Memory:      " + formatMemory(freeMemory));
+        System.out.println("  Max Memory:       " + formatMemory(maxMemory));
+        System.out.println();
+        System.out.println("SYSTEM INFO:");
+        System.out.println("  Available Processors: " + runtime.availableProcessors());
+        System.out.println("  Total Students:       " + studentManager.getStudentCount());
+        System.out.println("  Active Threads:       " + Thread.activeCount());
+    }
+
+    private static void streamProcessingPerformanceTest() {
+        System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║     STREAM PROCESSING PERFORMANCE TEST                       ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝\n");
+        
+        try {
+            // Step 1: Generate CSV
+            System.out.println("Step 1: Generate CSV with 10,000 grade records");
+            System.out.print("Generate students.csv? (Y/N): ");
+            String generate = scanner.nextLine();
+            
+            if (generate.equalsIgnoreCase("Y")) {
+                CSVGenerator.generateLargeCSV("students.csv", 10000);
+            }
+            
+            // Step 2-4: Import using streaming
+            System.out.println("\nStep 2-4: Import using streaming (Files.lines())");
+            System.out.print("Enter CSV filename (in ./imports/): ");
+            String filename = scanner.nextLine();
+            
+            String filepath = "./imports/" + filename;
+            
+            Runtime runtime = Runtime.getRuntime();
+            runtime.gc();
+            long memBefore = runtime.totalMemory() - runtime.freeMemory();
+            
+            long recordCount = streamDataProcessor.processCSVFileWithStreams(filepath);
+            
+            long memAfter = runtime.totalMemory() - runtime.freeMemory();
+            long memUsed = memAfter - memBefore;
+            
+            System.out.println("✓ Streaming import completed");
+            System.out.println("  Records: " + recordCount);
+            System.out.println("  Memory: " + formatMemory(memUsed));
+            
+            // Step 5-6: Import without streaming
+            System.out.println("\nStep 5-6: Import without streaming (load all at once)");
+            System.out.print("Continue? (Y/N): ");
+            String cont = scanner.nextLine();
+            
+            if (cont.equalsIgnoreCase("Y")) {
+                runtime.gc();
+                long memBefore2 = runtime.totalMemory() - runtime.freeMemory();
+                long startTime = System.currentTimeMillis();
+                
+                long count2 = java.nio.file.Files.readAllLines(java.nio.file.Paths.get(filepath))
+                    .stream().skip(1).filter(l -> !l.trim().isEmpty()).count();
+                
+                long duration = System.currentTimeMillis() - startTime;
+                long memAfter2 = runtime.totalMemory() - runtime.freeMemory();
+                long memUsed2 = memAfter2 - memBefore2;
+                
+                System.out.println("✓ Non-streaming import completed");
+                System.out.println("  Records: " + count2);
+                System.out.println("  Time: " + duration + "ms");
+                System.out.println("  Memory: " + formatMemory(memUsed2));
+                
+                System.out.println("\nMemory Comparison:");
+                System.out.println("  Streaming:     " + formatMemory(memUsed));
+                System.out.println("  Non-streaming: " + formatMemory(memUsed2));
+                System.out.println("  Difference:    " + formatMemory(memUsed2 - memUsed));
+            }
+            
+            // Step 7-10: Parallel vs Sequential
+            System.out.println("\nStep 7-10: Parallel vs Sequential Comparison");
+            System.out.print("Run comparison? (Y/N): ");
+            String runComp = scanner.nextLine();
+            
+            if (runComp.equalsIgnoreCase("Y")) {
+                streamDataProcessor.compareSequentialVsParallel();
+            }
+            
+            System.out.println("\n✓ Performance test completed!");
+            
+        } catch (Exception e) {
+            System.out.println("✗ Error: " + e.getMessage());
+        }
+    }
+
+    private static String formatMemory(long bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return String.format("%.2f KB", bytes / 1024.0);
+        return String.format("%.2f MB", bytes / (1024.0 * 1024.0));
+    }
+
     private static void testLRUEviction() {
         System.out.println("\n═══════════════════════════════════════════════════════════════");
         System.out.println("           LRU EVICTION TEST");
