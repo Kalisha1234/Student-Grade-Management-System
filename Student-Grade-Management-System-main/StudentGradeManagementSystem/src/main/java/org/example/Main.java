@@ -24,6 +24,7 @@ public class Main {
     private static PatternSearchService patternSearchService;
     private static CacheManager cacheManager;
     private static StreamDataProcessor streamDataProcessor;
+    private static AuditLogger auditLogger;
     private static Scanner scanner;
 
     // Validation patterns
@@ -49,6 +50,7 @@ public class Main {
         patternSearchService = new PatternSearchService(studentManager);
         cacheManager = new CacheManager(studentManager);
         streamDataProcessor = new StreamDataProcessor(studentManager, gpaCalculator);
+        auditLogger = new AuditLogger();
         bulkImportService = new BulkImportService(studentManager, csvParser, fileExporter);
         
         try {
@@ -96,8 +98,9 @@ public class Main {
             System.out.println("16. View System Performance                  [NEW]");
             System.out.println("17. Cache Management                         [NEW]");
             System.out.println("18. File Operations Menu                     [NEW]");
+            System.out.println("19. Audit Trail Viewer                       [NEW]");
             System.out.println();
-            System.out.println("19. Exit");
+            System.out.println("20. Exit");
             System.out.println();
             System.out.println("Background Tasks: ⚡ 3 active | 📊 Stats updating...");
             System.out.println();
@@ -125,8 +128,9 @@ public class Main {
                     case 16: displaySystemPerformance(); break;
                     case 17: cacheManagement(); break;
                     case 18: fileOperationsMenu(); break;
-                    case 19: exitApplication(); return;
-                    default: System.out.println("Invalid choice! Please enter 1-19.");
+                    case 19: auditTrailViewer(); break;
+                    case 20: exitApplication(); return;
+                    default: System.out.println("Invalid choice! Please enter 1-20.");
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
