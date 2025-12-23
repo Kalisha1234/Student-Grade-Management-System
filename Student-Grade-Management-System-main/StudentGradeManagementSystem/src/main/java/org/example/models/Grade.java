@@ -1,11 +1,14 @@
 package org.example.models;
 
 import org.example.interfaces.Gradable;
+import org.example.utils.ValidationUtils;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Grade implements Gradable {
+public class Grade implements Gradable, Serializable {
+    private static final long serialVersionUID = 1L;
     private final String gradeId;
     private final String studentId;
     private final Subject subject;
@@ -14,12 +17,14 @@ public class Grade implements Gradable {
     private static int gradeCounter = 1;
 
     public Grade(String studentId, Subject subject, double grade) {
+        ValidationUtils.validateStudentId(studentId);
+        ValidationUtils.validateGrade(grade);
+        
         this.gradeId = "GRD" + String.format("%03d", gradeCounter++);
         this.studentId = studentId;
         this.subject = subject;
         this.grade = grade;
 
-        // Set current date
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         this.date = formatter.format(new Date());
     }
@@ -34,6 +39,7 @@ public class Grade implements Gradable {
     @Override
     public boolean recordGrade(double grade) {
         if (validateGrade(grade)) {
+            ValidationUtils.validateGrade(grade);
             this.grade = grade;
             return true;
         }

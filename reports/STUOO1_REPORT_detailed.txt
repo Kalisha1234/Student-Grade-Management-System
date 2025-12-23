@@ -1,3 +1,0 @@
-Detailed report for student ID: STU001
-Generated on: Tue Dec 09 09:47:37 GMT 2025
-This would contain all grade details, averages, and analysis.
