@@ -64,28 +64,44 @@ public class Main {
 
     private static void displayMainMenu() {
         while (true) {
-            System.out.println("\n==========================================");
-            System.out.println("  STUDENT GRADE MANAGEMENT");
-            System.out.println("==========================================");
-            System.out.println("1. Add Student");
+            System.out.println("\n┌─────────────────────────────────────────────────────────┐");
+            System.out.println("│     STUDENT GRADE MANAGEMENT - MAIN MENU                │");
+            System.out.println("│              [Advanced Edition v3.0]                    │");
+            System.out.println("└─────────────────────────────────────────────────────────┘");
+            System.out.println();
+            System.out.println("STUDENT MANAGEMENT");
+            System.out.println("1. Add Student (with validation)");
             System.out.println("2. View Students");
             System.out.println("3. Record Grade");
             System.out.println("4. View Grade Report");
+            System.out.println();
+            System.out.println("FILE OPERATIONS");
             System.out.println("5. Export Grade Report (CSV/JSON/Binary)");
-            System.out.println("6. Import Data (Multi-format support)");
+            System.out.println("6. Import Data (Multi-format support)        [ENHANCED]");
             System.out.println("7. Bulk Import Grades");
+            System.out.println();
+            System.out.println("ANALYTICS & REPORTING");
             System.out.println("8. Calculate Student GPA");
             System.out.println("9. View Class Statistics");
-            System.out.println("10. Search Students");
-            System.out.println("11. File Operations");
-            System.out.println("12. Batch Report Generation");
-            System.out.println("13. Real-Time Statistics Dashboard");
-            System.out.println("14. Scheduled Tasks Manager");
-            System.out.println("15. Advanced Pattern Search");
-            System.out.println("16. Cache Management");
-            System.out.println("17. Stream-Based Data Processing");
-            System.out.println("18. Exit");
-            System.out.print("\nEnter choice: ");
+            System.out.println("10. Real-Time Statistics Dashboard           [NEW]");
+            System.out.println("11. Generate Batch Reports                   [NEW]");
+            System.out.println();
+            System.out.println("SEARCH & QUERY");
+            System.out.println("12. Search Students (Advanced)               [ENHANCED]");
+            System.out.println("13. Pattern-Based Search                     [NEW]");
+            System.out.println("14. Stream-Based Data Processing             [NEW]");
+            System.out.println();
+            System.out.println("ADVANCED FEATURES");
+            System.out.println("15. Schedule Automated Tasks                 [NEW]");
+            System.out.println("16. View System Performance                  [NEW]");
+            System.out.println("17. Cache Management                         [NEW]");
+            System.out.println("18. File Operations Menu                     [NEW]");
+            System.out.println();
+            System.out.println("19. Exit");
+            System.out.println();
+            System.out.println("Background Tasks: ⚡ 3 active | 📊 Stats updating...");
+            System.out.println();
+            System.out.print("Enter choice: ");
 
             try {
                 int choice = getIntInput();
@@ -100,16 +116,17 @@ public class Main {
                     case 7: bulkImportGrades(); break;
                     case 8: calculateGPA(); break;
                     case 9: viewClassStatistics(); break;
-                    case 10: searchStudents(); break;
-                    case 11: fileOperationsMenu(); break;
-                    case 12: batchReportGeneration(); break;
-                    case 13: realTimeStatisticsDashboard(); break;
-                    case 14: scheduledTasksManager(); break;
-                    case 15: advancedPatternSearch(); break;
-                    case 16: cacheManagement(); break;
-                    case 17: streamDataProcessing(); break;
-                    case 18: exitApplication(); return;
-                    default: System.out.println("Invalid choice! Please enter 1-18.");
+                    case 10: realTimeStatisticsDashboard(); break;
+                    case 11: batchReportGeneration(); break;
+                    case 12: searchStudents(); break;
+                    case 13: advancedPatternSearch(); break;
+                    case 14: streamDataProcessing(); break;
+                    case 15: scheduledTasksManager(); break;
+                    case 16: displaySystemPerformance(); break;
+                    case 17: cacheManagement(); break;
+                    case 18: fileOperationsMenu(); break;
+                    case 19: exitApplication(); return;
+                    default: System.out.println("Invalid choice! Please enter 1-19.");
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
@@ -1190,6 +1207,29 @@ public class Main {
             default:
                 System.out.println("Invalid choice!");
         }
+    }
+
+    private static void displaySystemPerformance() {
+        System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║              SYSTEM PERFORMANCE                            ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝\n");
+        
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory();
+        long freeMemory = runtime.freeMemory();
+        long usedMemory = totalMemory - freeMemory;
+        long maxMemory = runtime.maxMemory();
+        
+        System.out.println("MEMORY USAGE:");
+        System.out.println("  Total Memory:     " + formatMemory(totalMemory));
+        System.out.println("  Used Memory:      " + formatMemory(usedMemory));
+        System.out.println("  Free Memory:      " + formatMemory(freeMemory));
+        System.out.println("  Max Memory:       " + formatMemory(maxMemory));
+        System.out.println();
+        System.out.println("SYSTEM INFO:");
+        System.out.println("  Available Processors: " + runtime.availableProcessors());
+        System.out.println("  Total Students:       " + studentManager.getStudentCount());
+        System.out.println("  Active Threads:       " + Thread.activeCount());
     }
 
     private static void streamProcessingPerformanceTest() {
