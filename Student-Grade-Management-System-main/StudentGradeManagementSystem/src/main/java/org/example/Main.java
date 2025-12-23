@@ -22,6 +22,7 @@ public class Main {
     private static RealTimeStatisticsDashboard statisticsDashboard;
     private static TaskScheduler taskScheduler;
     private static PatternSearchService patternSearchService;
+    private static CacheManager cacheManager;
     private static Scanner scanner;
 
     // Validation patterns
@@ -45,6 +46,7 @@ public class Main {
         statisticsDashboard = new RealTimeStatisticsDashboard(studentManager);
         taskScheduler = new TaskScheduler(studentManager);
         patternSearchService = new PatternSearchService(studentManager);
+        cacheManager = new CacheManager(studentManager);
         bulkImportService = new BulkImportService(studentManager, csvParser, fileExporter);
         
         try {
@@ -78,7 +80,8 @@ public class Main {
             System.out.println("13. Real-Time Statistics Dashboard");
             System.out.println("14. Scheduled Tasks Manager");
             System.out.println("15. Advanced Pattern Search");
-            System.out.println("16. Exit");
+            System.out.println("16. Cache Management");
+            System.out.println("17. Exit");
             System.out.print("\nEnter choice: ");
 
             try {
@@ -100,8 +103,9 @@ public class Main {
                     case 13: realTimeStatisticsDashboard(); break;
                     case 14: scheduledTasksManager(); break;
                     case 15: advancedPatternSearch(); break;
-                    case 16: exitApplication(); return;
-                    default: System.out.println("Invalid choice! Please enter 1-16.");
+                    case 16: cacheManagement(); break;
+                    case 17: exitApplication(); return;
+                    default: System.out.println("Invalid choice! Please enter 1-17.");
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
@@ -1022,6 +1026,10 @@ public class Main {
         System.out.println("\nThank you for using Enhanced Student Grade Management System!");
         System.out.println("Goodbye!");
         
+        if (cacheManager != null) {
+            cacheManager.shutdown();
+        }
+        
         if (taskScheduler != null) {
             taskScheduler.shutdown();
         }
@@ -1035,6 +1043,80 @@ public class Main {
         }
         
         scanner.close();
+    }
+
+    private static void cacheManagement() {
+        System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
+        System.out.println("║              CACHE MANAGEMENT                                 ║");
+        System.out.println("╚══════════════════════════════════════════════════════════════╝\n");
+        
+        System.out.println("1. View Cache Statistics");
+        System.out.println("2. View Cache Contents");
+        System.out.println("3. Clear All Caches");
+        System.out.println("4. Invalidate Student Cache");
+        System.out.println("5. Test LRU Eviction (200 entries)");
+        System.out.println("6. Return to Main Menu");
+        System.out.print("\nSelect option (1-6): ");
+        
+        int choice = getIntInput();
+        
+        switch (choice) {
+            case 1:
+                cacheManager.displayStatistics();
+                break;
+            case 2:
+                cacheManager.displayCacheContents();
+                break;
+            case 3:
+                System.out.print("\nAre you sure you want to clear all caches? (Y/N): ");
+                String confirm = scanner.nextLine();
+                if (confirm.equalsIgnoreCase("Y")) {
+                    cacheManager.clearAll();
+                } else {
+                    System.out.println("Operation cancelled.");
+                }
+                break;
+            case 4:
+                System.out.print("Enter Student ID to invalidate: ");
+                String studentId = scanner.nextLine();
+                cacheManager.invalidateStudent(studentId);
+                System.out.println("✓ Cache invalidated for " + studentId);
+                break;
+            case 5:
+                testLRUEviction();
+                break;
+            case 6:
+                return;
+            default:
+                System.out.println("Invalid choice!");
+        }
+    }
+    
+    private static void testLRUEviction() {
+        System.out.println("\n═══════════════════════════════════════════════════════════════");
+        System.out.println("           LRU EVICTION TEST");
+        System.out.println("═══════════════════════════════════════════════════════════════\n");
+        System.out.println("Adding 200 entries to student cache (max: 150)...");
+        
+        String[] firstNames = {"Alice", "Bob", "Carol", "David", "Emma", "Frank", "Grace", "Henry", "Iris", "Jack"};
+        String[] lastNames = {"Smith", "Johnson", "Williams", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor", "Anderson"};
+        
+        for (int i = 0; i < 200; i++) {
+            String name = firstNames[i % firstNames.length] + " " + lastNames[(i / 10) % lastNames.length];
+            String email = "user" + i + "@test.edu";
+            String phone = String.format("%03d-%03d-%04d", (i % 900) + 100, (i % 900) + 100, i % 10000);
+            
+            Student dummy = new RegularStudent(name, 20, email, phone);
+            cacheManager.putStudent("TEST" + String.format("%03d", i), dummy);
+            
+            if ((i + 1) % 50 == 0) {
+                System.out.println("  Added " + (i + 1) + " entries...");
+            }
+        }
+        
+        System.out.println("\n✓ Test complete!");
+        System.out.println("Expected: ~50 evictions (200 added - 150 max capacity)\n");
+        cacheManager.displayStatistics();
     }
 
     private static void exportPatternSearchResults(PatternSearchResult result) {
