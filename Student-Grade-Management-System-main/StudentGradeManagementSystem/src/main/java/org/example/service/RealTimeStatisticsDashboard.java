@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.models.Grade;
 import org.example.models.Student;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -11,13 +12,14 @@ import java.util.concurrent.atomic.AtomicLong;
 public class RealTimeStatisticsDashboard {
     private final EnhancedStudentManager studentManager;
     private final StatisticsCalculator statisticsCalculator;
+    private AuditLogger auditLogger;
     
     // Thread-safe collections and atomics
     private final ConcurrentHashMap<String, Object> cachedStats = new ConcurrentHashMap<>();
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
     private final AtomicBoolean isPaused = new AtomicBoolean(false);
     private final AtomicLong lastUpdateTime = new AtomicLong(0);
-    private final AtomicInteger cacheHits = new AtomicInteger(0);
+    private final java.util.concurrent.atomic.AtomicInteger cacheHits = new AtomicInteger(0);
     private final AtomicInteger cacheRequests = new AtomicInteger(0);
     
     private Thread backgroundThread;
@@ -26,6 +28,10 @@ public class RealTimeStatisticsDashboard {
     public RealTimeStatisticsDashboard(EnhancedStudentManager studentManager) {
         this.studentManager = studentManager;
         this.statisticsCalculator = new StatisticsCalculator();
+    }
+    
+    public void setAuditLogger(AuditLogger auditLogger) {
+        this.auditLogger = auditLogger;
     }
     
     public void startDashboard() {
@@ -338,18 +344,7 @@ public class RealTimeStatisticsDashboard {
         double gradeValue = input.nextDouble();
         
         try {
-            org.example.models.Subject subject;
-            String courseCode = subjectName.substring(0, 3).toUpperCase() + "101";
-            
-            if (subjectName.toLowerCase().contains("math") || 
-                subjectName.toLowerCase().contains("english") || 
-                subjectName.toLowerCase().contains("science")) {
-                subject = new org.example.models.CoreSubject(subjectName, courseCode);
-            } else {
-                subject = new org.example.models.ElectiveSubject(subjectName, courseCode);
-            }
-            
-            org.example.models.Grade grade = new org.example.models.Grade(studentId, subject, gradeValue);
+            Grade grade = getGrade(subjectName, studentId, gradeValue);
             studentManager.addGradeToStudent(studentId, grade);
             System.out.println("✓ Grade recorded successfully!");
         } catch (Exception e) {
@@ -359,5 +354,21 @@ public class RealTimeStatisticsDashboard {
         System.out.println("Press Enter to continue...");
         input.nextLine();
         input.nextLine();
+    }
+
+    private static Grade getGrade(String subjectName, String studentId, double gradeValue) {
+        org.example.models.Subject subject;
+        String courseCode = subjectName.substring(0, 3).toUpperCase() + "101";
+
+        if (subjectName.toLowerCase().contains("math") || 
+            subjectName.toLowerCase().contains("english") || 
+            subjectName.toLowerCase().contains("science")) {
+            subject = new org.example.models.CoreSubject(subjectName, courseCode);
+        } else {
+            subject = new org.example.models.ElectiveSubject(subjectName, courseCode);
+        }
+
+        Grade grade = new Grade(studentId, subject, gradeValue);
+        return grade;
     }
 }
