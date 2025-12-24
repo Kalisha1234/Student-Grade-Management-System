@@ -1,6 +1,6 @@
 package org.example.service;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Calculates statistical measures for grade data including mean, median, mode,
