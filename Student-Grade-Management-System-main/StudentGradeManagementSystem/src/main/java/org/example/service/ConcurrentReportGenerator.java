@@ -120,8 +120,14 @@ public class ConcurrentReportGenerator {
             try {
                 String filename = String.format("%s_%s_%d", studentId, reportType, taskStart);
                 
-                if ("summary".equals(reportType)) {
+                // Map format types to actual export methods
+                if ("pdf".equals(reportType) || "summary".equals(reportType)) {
                     fileExporter.exportSummaryReport(studentId, filename);
+                } else if ("detailed".equals(reportType) || "excel".equals(reportType)) {
+                    fileExporter.exportDetailedReport(studentId, filename);
+                } else if ("all".equals(reportType)) {
+                    fileExporter.exportSummaryReport(studentId, filename);
+                    fileExporter.exportDetailedReport(studentId, filename);
                 } else {
                     fileExporter.exportDetailedReport(studentId, filename);
                 }
@@ -169,7 +175,7 @@ public class ConcurrentReportGenerator {
                 Thread.sleep(100); // Initial delay
                 
                 while (running && completed.get() < totalReports) {
-                    clearScreen();
+                    // Don't clear screen - just print updates
                     
                     System.out.println("\nBATCH PROCESSING STATUS");
                     System.out.println(createUnderline(50));
@@ -202,7 +208,7 @@ public class ConcurrentReportGenerator {
                         System.out.println("  Throughput: " + String.format("%.1f", (current * 1000.0) / elapsed) + " reports/sec");
                     }
                     
-                    Thread.sleep(200);
+                    Thread.sleep(500); // Increased delay to reduce output spam
                 }
             } catch (InterruptedException e) {
                 // Thread interrupted

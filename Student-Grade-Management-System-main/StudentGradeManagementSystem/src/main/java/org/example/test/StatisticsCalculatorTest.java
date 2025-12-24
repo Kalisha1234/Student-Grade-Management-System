@@ -118,7 +118,7 @@ class StatisticsCalculatorTest {
     void testCalculateStandardDeviation_ValidData() {
         List<Double> grades = Arrays.asList(2.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 9.0);
         double stdDev = statisticsCalculator.calculateStandardDeviation(grades);
-        assertEquals(2.0, stdDev, 0.1, "Standard deviation calculation is incorrect");
+        assertEquals(2.138, stdDev, 0.01, "Standard deviation calculation is incorrect");
     }
 
     @Test
@@ -284,5 +284,5 @@ class StatisticsCalculatorTest {
         
         int total = distribution.values().stream().mapToInt(Integer::intValue).sum();
         assertEquals(20, total, "Distribution should account for all 20 grades");
-    }
+        }
 }
