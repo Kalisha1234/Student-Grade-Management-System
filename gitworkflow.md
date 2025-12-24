@@ -47,7 +47,6 @@
 - `docs:` - Documentation
 - `test:` - Tests
 - `refactor:` - Code refactoring
-- `chore:` - Maintenance
 
 ## Feature Branches
 
