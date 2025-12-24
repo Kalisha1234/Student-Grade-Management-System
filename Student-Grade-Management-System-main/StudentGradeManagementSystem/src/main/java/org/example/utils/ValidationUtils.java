@@ -2,6 +2,13 @@ package org.example.utils;
 
 import java.util.regex.Pattern;
 
+/**
+ * Utility class for validating student data using regex patterns.
+ * Provides validation for IDs, emails, phone numbers, names, dates, course codes, and grades.
+ * 
+ * @author Student Grade Management System
+ * @version 3.0
+ */
 public class ValidationUtils {
     private static final Pattern STUDENT_ID_PATTERN = Pattern.compile("^STU\\d{3}$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
@@ -43,24 +50,48 @@ public class ValidationUtils {
         return grade >= 0 && grade <= 100;
     }
 
+    /**
+     * Validates student ID format (STU###).
+     * 
+     * @param studentId the student ID to validate
+     * @throws IllegalArgumentException if format is invalid
+     */
     public static void validateStudentId(String studentId) {
         if (!isValidStudentId(studentId)) {
             throw new IllegalArgumentException("Invalid Student ID: '" + studentId + "'. Expected: STU### (e.g., STU001)");
         }
     }
 
+    /**
+     * Validates email format.
+     * 
+     * @param email the email to validate
+     * @throws IllegalArgumentException if format is invalid
+     */
     public static void validateEmail(String email) {
         if (!isValidEmail(email)) {
             throw new IllegalArgumentException("Invalid Email: '" + email + "'. Expected: user@domain.com");
         }
     }
 
+    /**
+     * Validates phone number format.
+     * 
+     * @param phone the phone number to validate
+     * @throws IllegalArgumentException if format is invalid
+     */
     public static void validatePhone(String phone) {
         if (!isValidPhone(phone)) {
             throw new IllegalArgumentException("Invalid Phone: '" + phone + "'. Valid: (123) 456-7890, 123-456-7890, +1-123-456-7890, 1234567890");
         }
     }
 
+    /**
+     * Validates name format (letters, spaces, hyphens, apostrophes).
+     * 
+     * @param name the name to validate
+     * @throws IllegalArgumentException if format is invalid
+     */
     public static void validateName(String name) {
         if (!isValidName(name)) {
             throw new IllegalArgumentException("Invalid Name: '" + name + "'. Use letters, spaces, hyphens, apostrophes (e.g., John O'Brien)");
@@ -79,6 +110,12 @@ public class ValidationUtils {
         }
     }
 
+    /**
+     * Validates grade is within 0-100 range.
+     * 
+     * @param grade the grade to validate
+     * @throws IllegalArgumentException if grade is out of range
+     */
     public static void validateGrade(double grade) {
         if (!isValidGrade(grade)) {
             throw new IllegalArgumentException("Invalid Grade: " + grade + ". Must be 0-100");

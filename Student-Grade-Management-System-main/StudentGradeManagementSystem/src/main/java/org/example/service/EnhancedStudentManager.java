@@ -1,6 +1,5 @@
 package org.example.service;
 
-
 import org.example.exceptions.StudentNotFoundException;
 import org.example.interfaces.Searchable;
 import org.example.models.*;
@@ -8,6 +7,14 @@ import org.example.utils.ValidationUtils;
 
 import java.util.*;
 
+/**
+ * Enhanced student manager with advanced search, statistics, and GPA reporting.
+ * Uses HashMap for O(1) lookups, TreeMap for sorted rankings, and PriorityQueue for task scheduling.
+ * Implements Searchable interface for flexible student queries.
+ * 
+ * @author Student Grade Management System
+ * @version 3.0
+ */
 public class EnhancedStudentManager implements Searchable {
     // HashMap for O(1) student lookup by ID
     private HashMap<String, Student> students;
@@ -33,7 +40,14 @@ public class EnhancedStudentManager implements Searchable {
         initializeSampleData();
     }
 
-    // O(1) lookup using HashMap.get()
+    /**
+     * Searches for a student by ID.
+     * Time Complexity: O(1) using HashMap.
+     * 
+     * @param studentId the student ID to search for
+     * @return the student if found
+     * @throws StudentNotFoundException if student doesn't exist
+     */
     @Override
     public Student searchById(String studentId) throws StudentNotFoundException {
         ValidationUtils.validateStudentId(studentId);
@@ -44,7 +58,13 @@ public class EnhancedStudentManager implements Searchable {
         return student;
     }
 
-    // O(n) iteration through HashMap values + O(n log n) sorting
+    /**
+     * Searches for students by name (partial match).
+     * Time Complexity: O(n) iteration + O(n log n) sorting.
+     * 
+     * @param name name or partial name to search for
+     * @return list of matching students sorted by name
+     */
     @Override
     public List<Student> searchByName(String name) {
         List<Student> results = new ArrayList<>();
@@ -60,7 +80,14 @@ public class EnhancedStudentManager implements Searchable {
         return results;
     }
 
-    // O(n) iteration through HashMap values + O(n log n) sorting
+    /**
+     * Searches for students within a grade range.
+     * Time Complexity: O(n) iteration + O(n log n) sorting.
+     * 
+     * @param min minimum grade percentage
+     * @param max maximum grade percentage
+     * @return list of matching students sorted by GPA descending
+     */
     @Override
     public List<Student> searchByGradeRange(double min, double max) {
         ValidationUtils.validateGrade(min);
@@ -93,6 +120,9 @@ public class EnhancedStudentManager implements Searchable {
         return results;
     }
 
+    /**
+     * Displays comprehensive class statistics including distribution and analysis.
+     */
     public void calculateAndDisplayStatistics() {
         List<Double> allGrades = getAllGrades();
 
@@ -150,6 +180,12 @@ public class EnhancedStudentManager implements Searchable {
         }
     }
 
+    /**
+     * Displays detailed GPA report for a student including rankings.
+     * 
+     * @param studentId the student's ID
+     * @throws StudentNotFoundException if student doesn't exist
+     */
     public void displayGPAReport(String studentId) throws StudentNotFoundException {
         Student student = searchById(studentId);
 
@@ -360,7 +396,12 @@ public class EnhancedStudentManager implements Searchable {
         }
     }
 
-    // O(1) HashMap insertion + O(log n) TreeMap insertion + O(1) ArrayList append
+    /**
+     * Adds a student to the system and updates rankings.
+     * Time Complexity: O(1) HashMap + O(log n) TreeMap + O(1) ArrayList.
+     * 
+     * @param student the student to add
+     */
     public void addStudent(Student student) {
         students.put(student.getStudentId(), student);
         studentInsertionOrder.add(student.getStudentId());
@@ -376,6 +417,13 @@ public class EnhancedStudentManager implements Searchable {
         gpaRankings.computeIfAbsent(gpa, k -> new ArrayList<>()).add(student);
     }
 
+    /**
+     * Adds a grade to a student and updates their ranking.
+     * 
+     * @param studentId the student's ID
+     * @param grade the grade to add
+     * @throws StudentNotFoundException if student doesn't exist
+     */
     public void addGradeToStudent(String studentId, Grade grade) throws StudentNotFoundException {
         Student student = searchById(studentId);
         removeFromGPARankings(student);

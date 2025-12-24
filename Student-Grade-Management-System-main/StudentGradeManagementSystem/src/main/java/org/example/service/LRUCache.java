@@ -7,6 +7,15 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 
+/**
+ * Least Recently Used (LRU) cache implementation with thread-safe operations.
+ * Provides automatic eviction, hit/miss tracking, and performance metrics.
+ * 
+ * @param <K> key type
+ * @param <V> value type
+ * @author Student Grade Management System
+ * @version 3.0
+ */
 public class LRUCache<K, V> {
     private final int maxSize;
     private final ConcurrentHashMap<K, CacheEntry<V>> cache;
@@ -27,6 +36,12 @@ public class LRUCache<K, V> {
         this.refreshScheduler = Executors.newSingleThreadScheduledExecutor();
     }
 
+    /**
+     * Retrieves value from cache and updates access order.
+     * 
+     * @param key the cache key
+     * @return cached value, or null if not found
+     */
     public V get(K key) {
         long startTime = System.nanoTime();
         CacheEntry<V> entry = cache.get(key);
@@ -44,6 +59,12 @@ public class LRUCache<K, V> {
         }
     }
 
+    /**
+     * Stores value in cache with automatic eviction if full.
+     * 
+     * @param key the cache key
+     * @param value the value to cache
+     */
     public void put(K key, V value) {
         if (cache.size() >= maxSize && !cache.containsKey(key)) {
             evictLRU();
@@ -81,6 +102,11 @@ public class LRUCache<K, V> {
         totalMissTime.set(0);
     }
 
+    /**
+     * Calculates cache hit rate as percentage.
+     * 
+     * @return hit rate (0-100)
+     */
     public double getHitRate() {
         long total = hits.get() + misses.get();
         return total == 0 ? 0 : (hits.get() * 100.0) / total;

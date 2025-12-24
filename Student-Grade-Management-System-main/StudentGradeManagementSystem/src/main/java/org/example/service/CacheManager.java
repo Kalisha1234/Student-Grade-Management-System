@@ -5,6 +5,13 @@ import org.example.models.Student;
 
 import java.util.*;
 
+/**
+ * Manages LRU caches for students, reports, and statistics.
+ * Provides cache warming, auto-refresh, and performance monitoring.
+ * 
+ * @author Student Grade Management System
+ * @version 3.0
+ */
 public class CacheManager {
     private final LRUCache<String, Student> studentCache;
     private final LRUCache<String, String> reportCache;
@@ -40,6 +47,12 @@ public class CacheManager {
         }, 300); // Refresh every 5 minutes
     }
 
+    /**
+     * Retrieves student from cache or loads from manager.
+     * 
+     * @param studentId the student's ID
+     * @return the student, or null if not found
+     */
     public Student getStudent(String studentId) {
         Student cached = studentCache.get(studentId);
         if (cached == null) {
@@ -51,6 +64,11 @@ public class CacheManager {
         return cached;
     }
 
+    /**
+     * Invalidates cached data for a student.
+     * 
+     * @param studentId the student's ID
+     */
     public void invalidateStudent(String studentId) {
         studentCache.invalidate(studentId);
         reportCache.invalidate(studentId + "_report");
@@ -83,6 +101,9 @@ public class CacheManager {
         System.out.println("✓ All caches cleared");
     }
 
+    /**
+     * Displays comprehensive cache statistics dashboard.
+     */
     public void displayStatistics() {
         System.out.println("\n╔══════════════════════════════════════════════════════════════╗");
         System.out.println("║              CACHE STATISTICS DASHBOARD                      ║");

@@ -11,6 +11,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Exports student data and reports to files.
+ * Implements Exportable interface supporting multiple report formats.
+ * 
+ * @author Student Grade Management System
+ * @version 3.0
+ */
 public class FileExporter implements Exportable {
     private static final String REPORTS_DIR = "./reports/";
     private static final String LOGS_DIR = "./logs/";
@@ -36,6 +43,14 @@ public class FileExporter implements Exportable {
         new File(IMPORTS_DIR).mkdirs();
     }
 
+    /**
+     * Exports summary report with student overview and performance metrics.
+     * 
+     * @param studentId the student's ID
+     * @param filename output filename (without extension)
+     * @throws IOException if file operations fail
+     * @throws StudentNotFoundException if student doesn't exist
+     */
     @Override
     public void exportSummaryReport(String studentId, String filename)
             throws IOException, StudentNotFoundException {
@@ -75,6 +90,14 @@ public class FileExporter implements Exportable {
         writeToFile(REPORTS_DIR + filename + "_summary.txt", report.toString());
     }
 
+    /**
+     * Exports detailed report with all grades and comprehensive analysis.
+     * 
+     * @param studentId the student's ID
+     * @param filename output filename (without extension)
+     * @throws IOException if file operations fail
+     * @throws StudentNotFoundException if student doesn't exist
+     */
     @Override
     public void exportDetailedReport(String studentId, String filename)
             throws IOException, StudentNotFoundException {

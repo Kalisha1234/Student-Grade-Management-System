@@ -1,9 +1,22 @@
 package org.example.service;
 
-import java.util.*;
+import java.util.List;
 
+/**
+ * Calculates statistical measures for grade data including mean, median, mode,
+ * standard deviation, and grade distribution.
+ * 
+ * @author Student Grade Management System
+ * @version 3.0
+ */
 public class StatisticsCalculator {
 
+    /**
+     * Calculates the arithmetic mean (average) of grades.
+     * 
+     * @param grades list of grade values
+     * @return mean value, or 0.0 if list is empty/null
+     */
     public double calculateMean(List<Double> grades) {
         if (grades == null || grades.isEmpty()) return 0.0;
 
@@ -14,6 +27,12 @@ public class StatisticsCalculator {
         return sum / grades.size();
     }
 
+    /**
+     * Calculates the median (middle value) of grades.
+     * 
+     * @param grades list of grade values
+     * @return median value, or 0.0 if list is empty/null
+     */
     public double calculateMedian(List<Double> grades) {
         if (grades == null || grades.isEmpty()) return 0.0;
 
@@ -28,6 +47,12 @@ public class StatisticsCalculator {
         }
     }
 
+    /**
+     * Calculates the mode (most frequent value) of grades.
+     * 
+     * @param grades list of grade values
+     * @return mode value, or 0.0 if list is empty/null
+     */
     public double calculateMode(List<Double> grades) {
         if (grades == null || grades.isEmpty()) return 0.0;
 
@@ -49,6 +74,12 @@ public class StatisticsCalculator {
         return mode;
     }
 
+    /**
+     * Calculates the standard deviation of grades.
+     * 
+     * @param grades list of grade values
+     * @return standard deviation, or 0.0 if list has fewer than 2 elements
+     */
     public double calculateStandardDeviation(List<Double> grades) {
         if (grades == null || grades.size() < 2) return 0.0;
 
@@ -62,6 +93,12 @@ public class StatisticsCalculator {
         return Math.sqrt(sum / (grades.size() - 1));
     }
 
+    /**
+     * Calculates grade distribution across letter grade categories.
+     * 
+     * @param grades list of grade values
+     * @return map of grade categories to counts
+     */
     public Map<String, Integer> calculateGradeDistribution(List<Double> grades) {
         Map<String, Integer> distribution = new LinkedHashMap<>();
         distribution.put("A (90-100%)", 0);

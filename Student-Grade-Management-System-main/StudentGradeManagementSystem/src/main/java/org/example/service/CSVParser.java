@@ -10,8 +10,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Parses CSV files containing grade records.
+ * Validates format and data integrity during parsing.
+ * 
+ * @author Student Grade Management System
+ * @version 3.0
+ */
 public class CSVParser {
 
+    /**
+     * Parses CSV file and returns list of grade records.
+     * 
+     * @param filepath full path to CSV file
+     * @return list of parsed grade records
+     * @throws IOException if file cannot be read
+     * @throws InvalidFileFormatException if file format is invalid
+     */
     public List<GradeRecord> parseCSV(String filepath) throws IOException, InvalidFileFormatException {
         List<GradeRecord> records = new ArrayList<>();
 

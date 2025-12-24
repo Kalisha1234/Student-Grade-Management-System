@@ -1,6 +1,5 @@
 package org.example.service;
 
-
 import org.example.exceptions.InvalidGradeException;
 import org.example.exceptions.StudentNotFoundException;
 import org.example.models.*;
@@ -8,6 +7,13 @@ import org.example.models.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service for bulk importing grades from CSV files.
+ * Handles validation, error tracking, and logging of import operations.
+ * 
+ * @author Student Grade Management System
+ * @version 3.0
+ */
 public class BulkImportService {
     private EnhancedStudentManager studentManager;
     private CSVParser csvParser;
@@ -21,6 +27,12 @@ public class BulkImportService {
         this.fileExporter = fileExporter;
     }
 
+    /**
+     * Imports grades from CSV file with validation and error tracking.
+     * 
+     * @param filename the CSV filename (without path or extension)
+     * @return ImportResult containing success/failure counts and errors
+     */
     public ImportResult importResult(String filename) {
         ImportResult result = new ImportResult();
         List<String> errors = new ArrayList<>();

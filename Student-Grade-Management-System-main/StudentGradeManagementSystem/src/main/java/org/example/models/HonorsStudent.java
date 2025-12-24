@@ -1,5 +1,12 @@
 package org.example.models;
 
+/**
+ * Represents an honors student with higher passing grade requirements.
+ * Honors students must achieve 60% to pass and 85% for honors eligibility.
+ * 
+ * @author Student Grade Management System
+ * @version 3.0
+ */
 public class HonorsStudent extends Student {
     private double passingGrade = 60.0;
 
@@ -29,6 +36,11 @@ public class HonorsStudent extends Student {
         return passingGrade;
     }
 
+    /**
+     * Checks if the student qualifies for honors recognition.
+     * 
+     * @return true if average grade is 85% or higher
+     */
     public boolean checkHonorsEligibility() {
         return calculateAverageGrade() >= 85.0;
     }

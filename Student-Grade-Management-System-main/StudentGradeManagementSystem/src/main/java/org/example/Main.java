@@ -10,6 +10,13 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * Main entry point for the Student Grade Management System.
+ * Provides console-based interface for managing students, grades, and reports.
+ * 
+ * @author Student Grade Management System
+ * @version 3.0
+ */
 public class Main {
     private static EnhancedStudentManager studentManager;
     private static FileExporter fileExporter;

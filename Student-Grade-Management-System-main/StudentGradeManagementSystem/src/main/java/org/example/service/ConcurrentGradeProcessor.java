@@ -1,9 +1,18 @@
 package org.example.service;
 
+import org.example.models.Student;
+
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
+/**
+ * Concurrent grade processor using ExecutorService for parallel statistical calculations.
+ * Provides async methods for mean, median, and comprehensive statistics.
+ * 
+ * @author Student Grade Management System
+ * @version 3.0
+ */
 public class ConcurrentGradeProcessor {
     private final ExecutorService executor;
     private final StatisticsCalculator statisticsCalculator;
@@ -13,14 +22,32 @@ public class ConcurrentGradeProcessor {
         this.statisticsCalculator = new StatisticsCalculator();
     }
 
+    /**
+     * Calculates mean asynchronously.
+     * 
+     * @param grades list of grades
+     * @return CompletableFuture with mean value
+     */
     public CompletableFuture<Double> calculateMeanAsync(List<Double> grades) {
         return CompletableFuture.supplyAsync(() -> statisticsCalculator.calculateMean(grades), executor);
     }
 
+    /**
+     * Calculates median asynchronously.
+     * 
+     * @param grades list of grades
+     * @return CompletableFuture with median value
+     */
     public CompletableFuture<Double> calculateMedianAsync(List<Double> grades) {
         return CompletableFuture.supplyAsync(() -> statisticsCalculator.calculateMedian(grades), executor);
     }
 
+    /**
+     * Processes all statistics concurrently.
+     * 
+     * @param grades list of grades
+     * @return CompletableFuture with map of all statistics
+     */
     public CompletableFuture<Map<String, Object>> processAllStatisticsAsync(List<Double> grades) {
         CompletableFuture<Double> meanFuture = calculateMeanAsync(grades);
         CompletableFuture<Double> medianFuture = calculateMedianAsync(grades);

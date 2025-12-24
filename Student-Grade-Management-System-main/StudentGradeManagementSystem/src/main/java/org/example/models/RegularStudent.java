@@ -1,5 +1,12 @@
 package org.example.models;
 
+/**
+ * Represents a regular student with standard passing grade requirements.
+ * Regular students must achieve 50% or higher to pass.
+ * 
+ * @author Student Grade Management System
+ * @version 3.0
+ */
 public class RegularStudent extends Student {
     private double passingGrade = 50.0;
 
