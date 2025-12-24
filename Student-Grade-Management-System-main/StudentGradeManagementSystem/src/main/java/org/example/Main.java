@@ -98,9 +98,8 @@ public class Main {
             System.out.println("16. View System Performance                  [NEW]");
             System.out.println("17. Cache Management                         [NEW]");
             System.out.println("18. File Operations Menu                     [NEW]");
-            System.out.println("19. Audit Trail Viewer                       [NEW]");
             System.out.println();
-            System.out.println("20. Exit");
+            System.out.println("19. Exit");
             System.out.println();
             System.out.println("Background Tasks: ⚡ 3 active | 📊 Stats updating...");
             System.out.println();
@@ -128,9 +127,8 @@ public class Main {
                     case 16: displaySystemPerformance(); break;
                     case 17: cacheManagement(); break;
                     case 18: fileOperationsMenu(); break;
-                    case 19: auditTrailViewer(); break;
-                    case 20: exitApplication(); return;
-                    default: System.out.println("Invalid choice! Please enter 1-20.");
+                    case 19: exitApplication(); return;
+                    default: System.out.println("Invalid choice! Please enter 1-19.");
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
@@ -825,19 +823,21 @@ public class Main {
 
     private static void batchReportGeneration() {
         long startTime = System.currentTimeMillis();
-        System.out.println("\nBATCH REPORT GENERATION");
+        System.out.println("\nGENERATE BATCH REPORTS");
+        System.out.println("─────────────────────────────────────────────────");
         System.out.println();
         
-        System.out.println("Generate reports for:");
-        System.out.println("1. All students");
-        System.out.println("2. Students by type (Regular/Honors)");
-        System.out.println("3. Students by grade range");
-        System.out.print("\nSelect option (1-3): ");
+        System.out.println("Report Scope:");
+        System.out.println("1. All Students (" + studentManager.getStudentCount() + " students)");
+        System.out.println("2. By Student Type (Regular/Honors)");
+        System.out.println("3. By Grade Range");
+        System.out.println("4. Custom Selection");
+        System.out.print("\nSelect scope (1-4): ");
         
-        int option = getIntInput();
+        int scope = getIntInput();
         List<Student> students = new ArrayList<>();
         
-        switch (option) {
+        switch (scope) {
             case 1:
                 students = studentManager.getAllStudents();
                 break;
@@ -853,8 +853,11 @@ public class Main {
                 double max = getDoubleInput();
                 students = studentManager.searchByGradeRange(min, max);
                 break;
+            case 4:
+                students = customStudentSelection();
+                break;
             default:
-                System.out.println("Invalid option!");
+                System.out.println("Invalid scope!");
                 return;
         }
         
@@ -863,17 +866,35 @@ public class Main {
             return;
         }
         
-        System.out.println("\nFound " + students.size() + " students for batch processing.");
+        System.out.println();
+        System.out.println("Report Format:");
+        System.out.println("1. PDF Summary");
+        System.out.println("2. Detailed Text");
+        System.out.println("3. Excel Spreadsheet");
+        System.out.println("4. All Formats");
+        System.out.print("\nSelect format (1-4): ");
         
-        System.out.println("\nReport type:");
-        System.out.println("1. Summary reports");
-        System.out.println("2. Detailed reports");
-        System.out.print("Select type (1-2): ");
+        int formatChoice = getIntInput();
+        String format;
         
-        int reportTypeChoice = getIntInput();
-        String reportType = reportTypeChoice == 1 ? "summary" : "detailed";
+        switch (formatChoice) {
+            case 1: format = "pdf"; break;
+            case 2: format = "detailed"; break;
+            case 3: format = "excel"; break;
+            case 4: format = "all"; break;
+            default:
+                System.out.println("Invalid format!");
+                return;
+        }
         
-        System.out.print("Enter number of threads (2-8): ");
+        System.out.println();
+        System.out.println("Concurrency Settings:");
+        System.out.println();
+        int processors = Runtime.getRuntime().availableProcessors();
+        System.out.println("Available Processors: " + processors);
+        System.out.println("Recommended Threads: 4-" + processors);
+        System.out.println();
+        System.out.print("Enter number of threads (1-" + processors + "): ");
         int threadCount = getIntInput();
         
         try {
@@ -881,8 +902,8 @@ public class Main {
                 .map(Student::getStudentId)
                 .collect(java.util.stream.Collectors.toList());
                 
-            BatchReportResult result = concurrentReportGenerator.generateBatchReports(studentIds, reportType, threadCount);
-            auditLogger.log("BATCH_REPORT", "Generated " + reportType + " reports", System.currentTimeMillis() - startTime, true, "Count: " + result.getSuccessfulReports() + ", Time: " + result.getTotalTimeMs() + "ms");
+            BatchReportResult result = concurrentReportGenerator.generateBatchReports(studentIds, format, threadCount);
+            auditLogger.log("BATCH_REPORT", "Generated " + format + " reports", System.currentTimeMillis() - startTime, true, "Count: " + result.getSuccessfulReports() + ", Time: " + result.getTotalTimeMs() + "ms");
             
             System.out.println("\n✓ Batch report generation completed!");
             System.out.println("Total reports: " + result.getTotalReports());
@@ -893,6 +914,24 @@ public class Main {
         } catch (Exception e) {
             System.out.println("\n✗ Error generating batch reports: " + e.getMessage());
         }
+    }
+    
+    private static List<Student> customStudentSelection() {
+        List<Student> selected = new ArrayList<>();
+        System.out.println("\nEnter student IDs (comma-separated): ");
+        String input = scanner.nextLine();
+        String[] ids = input.split(",");
+        
+        for (String id : ids) {
+            try {
+                Student student = studentManager.searchById(id.trim());
+                selected.add(student);
+            } catch (StudentNotFoundException e) {
+                System.out.println("Warning: " + id.trim() + " not found");
+            }
+        }
+        
+        return selected;
     }
 
     private static void realTimeStatisticsDashboard() {
