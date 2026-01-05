@@ -18,6 +18,8 @@ import java.util.*;
 public class EnhancedStudentManager implements Searchable {
     // HashMap for O(1) student lookup by ID
     private HashMap<String, Student> students;
+    // HashSet for O(1) email uniqueness check
+    private HashSet<String> emails;
     // TreeMap for O(log n) sorted GPA rankings (descending order)
     private TreeMap<Double, List<Student>> gpaRankings;
     // PriorityQueue for O(log n) task scheduling by priority
@@ -31,6 +33,7 @@ public class EnhancedStudentManager implements Searchable {
 
     public EnhancedStudentManager() {
         students = new HashMap<>();
+        emails = new HashSet<>();
         gpaRankings = new TreeMap<>(Collections.reverseOrder());
         taskQueue = new PriorityQueue<>();
         studentInsertionOrder = new ArrayList<>();
@@ -403,7 +406,11 @@ public class EnhancedStudentManager implements Searchable {
      * @param student the student to add
      */
     public void addStudent(Student student) {
+        if (emails.contains(student.getEmail())) {
+            throw new IllegalArgumentException("Email already exists: " + student.getEmail());
+        }
         students.put(student.getStudentId(), student);
+        emails.add(student.getEmail());
         studentInsertionOrder.add(student.getStudentId());
         updateGPARankings(student);
         

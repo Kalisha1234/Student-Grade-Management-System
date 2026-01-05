@@ -950,6 +950,13 @@ public class Main {
         System.out.println("║              SCHEDULED TASKS MANAGER                         ║");
         System.out.println("╚══════════════════════════════════════════════════════════════╝");
         
+        System.out.println("\nActive Tasks");
+        System.out.println("═══════════════════════════════════════════════════════════════\n");
+        
+        // Display active schedules first
+        taskScheduler.displayAllTasks();
+        
+        // Then show menu options
         System.out.println("\n1. View All Scheduled Tasks");
         System.out.println("2. Add Custom Task");
         System.out.println("3. Configure & Schedule GPA Recalculation");
@@ -960,7 +967,7 @@ public class Main {
         
         switch (choice) {
             case 1:
-                taskScheduler.displayAllTasks();
+                scheduledTasksManager();
                 break;
             case 2:
                 taskScheduler.addCustomTask();

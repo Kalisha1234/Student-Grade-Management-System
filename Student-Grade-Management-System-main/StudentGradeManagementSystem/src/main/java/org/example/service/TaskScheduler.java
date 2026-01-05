@@ -23,7 +23,6 @@ public class TaskScheduler {
         this.statisticsCalculator = new StatisticsCalculator();
         this.tasks = new ConcurrentHashMap<>();
         this.futures = new ConcurrentHashMap<>();
-        loadSchedules();
         initializeDefaultTasks();
     }
 
@@ -43,7 +42,6 @@ public class TaskScheduler {
             intervalSeconds, intervalSeconds, TimeUnit.SECONDS
         );
         futures.put(scheduledTask.getTaskId(), future);
-        saveSchedules();
     }
 
     private void executeTask(ScheduledTask scheduledTask, Runnable task) {
@@ -62,7 +60,6 @@ public class TaskScheduler {
         long duration = System.currentTimeMillis() - startTime;
         scheduledTask.setLastDurationMs(duration);
         scheduledTask.setNextExecution(LocalDateTime.now().plusSeconds(scheduledTask.getIntervalSeconds()));
-        saveSchedules();
     }
 
     private void dailyGPARecalculation() {
@@ -249,7 +246,6 @@ public class TaskScheduler {
             initialDelaySeconds, intervalSeconds, TimeUnit.SECONDS
         );
         futures.put(scheduledTask.getTaskId(), future);
-        saveSchedules();
         
         System.out.println("\n✓ Task scheduled successfully!");
         System.out.println("Task ID: " + scheduledTask.getTaskId());
@@ -327,7 +323,6 @@ public class TaskScheduler {
         }
         
         scheduledTask.setNextExecution(LocalDateTime.now().plusSeconds(scheduledTask.getIntervalSeconds()));
-        saveSchedules();
     }
     
     private void logAudit(String message) {
@@ -351,32 +346,7 @@ public class TaskScheduler {
         }
     }
 
-    private void saveSchedules() {
-        try {
-            Files.createDirectories(Paths.get("./data"));
-            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SCHEDULE_FILE))) {
-                oos.writeObject(new ArrayList<>(tasks.values()));
-            }
-        } catch (IOException e) {
-            System.err.println("Warning: Could not save schedules: " + e.getMessage());
-        }
-    }
 
-    @SuppressWarnings("unchecked")
-    private void loadSchedules() {
-        try {
-            if (Files.exists(Paths.get(SCHEDULE_FILE))) {
-                try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(SCHEDULE_FILE))) {
-                    List<ScheduledTask> loadedTasks = (List<ScheduledTask>) ois.readObject();
-                    for (ScheduledTask task : loadedTasks) {
-                        tasks.put(task.getTaskId(), task);
-                    }
-                }
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Warning: Could not load schedules: " + e.getMessage());
-        }
-    }
 
     public void shutdown() {
         System.out.println("\nShutting down task scheduler...");
